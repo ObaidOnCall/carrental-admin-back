@@ -1,4 +1,4 @@
-package ma.crm.carental.dto;
+package ma.crm.carental.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

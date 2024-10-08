@@ -34,7 +34,7 @@ build/
 
 # Ignore all .properties files
 *.properties
-
+*.pub
 
 # Unignore a specific .properties file
 !application.example.properties

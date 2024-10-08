@@ -8,5 +8,7 @@ import ma.crm.carental.entities.Vehicule;
 
 
 public interface VehiculeRepo extends JpaRepository<Vehicule , Long>{
-    Page<Vehicule> findByOwnerId(String ownerId ,Pageable pageable) ;
+    // Page<Vehicule> findByOwnerId(String ownerId ,Pageable pageable) ;
+    Page<Vehicule> findByTenantId(String tenantId ,Pageable pageable) ;
+
 }

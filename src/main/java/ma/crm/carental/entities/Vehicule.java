@@ -1,81 +1,80 @@
 package ma.crm.carental.entities;
 
 import java.util.Date;
+import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
         name = "vehicules" ,
         indexes = {
-            @Index(columnList = "ownerId" , name = "ownerId_idx")
+            @Index(columnList = "tenantId" , name = "tenantId_idx")
+        },
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"tenantId" , "matricule"})
         }
-    )
-@Data @NoArgsConstructor @AllArgsConstructor
-public class Vehicule {
+)
+@Data  @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor @AllArgsConstructor @Builder
+public class Vehicule extends AbstractBaseEntity{
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "vhicule_seq")
     @SequenceGenerator(name = "vhicule_seq" , sequenceName = "vhicule_id_seq"  , allocationSize = 20)
     private Long id ;
 
-    private String brand ;
+    @Column(nullable = false)
+    private String matricule ;
 
-    private String model ;
+    // @ManyToOne(fetch = FetchType.EAGER)
+    // @JoinColumn(nullable = false)
+    // private Brand brand ;
 
-    /**
-     * @see The year the vehicle was manufactured.
-     */
-
-    private Date year ;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    private Model model ;
 
     private String color ;
 
     @Column(nullable = false)
     private int mileage ;
 
-    /**
-     * @see must be Enume
-     */
-
-    private String fuelType ;
-
-    @Column(nullable = false)
-    private double engineSize ;
-
-
-    private String transmissionType ;
-
-    @Column(nullable = false)
-    private int numberOfDoors ;
-
-
-    private String licensePlate ;
-
-
-    private double weight ;
-
-    @Column(nullable = false)
-    private double topSpeed ;
-
     @Column(nullable = false)
     private double price ;
 
-    @Column(nullable = false , updatable = false , length = 64)
-    private String ownerId ;
+    @OneToMany(mappedBy = "vehicule" , fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Assurance> assurances ;
 
 
+    @CreationTimestamp
+    private Date createdAt ;
+
+    @UpdateTimestamp
+    private Date updatedAt ;
 
 }

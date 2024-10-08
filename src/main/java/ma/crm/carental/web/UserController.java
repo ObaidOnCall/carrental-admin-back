@@ -18,20 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
-import ma.crm.carental.dto.UserCreateDto;
-import ma.crm.carental.dto.UserResponseDto;
-import ma.crm.carental.dto.UserUpdateDto;
+import ma.crm.carental.dtos.UserCreateDto;
+import ma.crm.carental.dtos.UserResponseDto;
+import ma.crm.carental.dtos.UserUpdateDto;
 import ma.crm.carental.services.UserService;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService ;
+
+    
 
     @Autowired
     public UserController (UserService userService) {
@@ -62,4 +62,6 @@ public class UserController {
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal() ;
         return userService.showUsers( page * size, size ,jwt.getTokenValue()) ;
     }
+
+    
 }

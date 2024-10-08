@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +13,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ma.crm.carental.dto.UserCreateDto;
-import ma.crm.carental.dto.UserResponseDto;
-import ma.crm.carental.dto.UserUpdateDto;
+import ma.crm.carental.dtos.UserCreateDto;
+import ma.crm.carental.dtos.UserResponseDto;
+import ma.crm.carental.dtos.UserUpdateDto;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

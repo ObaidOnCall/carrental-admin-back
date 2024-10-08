@@ -14,10 +14,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import ma.crm.carental.conf.KeycloakJwtAuthenticationConverter;
-
+import ma.crm.carental.tenantfilter.TenantFilter;
 
 
 @Configuration
@@ -25,6 +27,8 @@ import ma.crm.carental.conf.KeycloakJwtAuthenticationConverter;
 public class SecurityConf {
     
     private final CorsConfigurationSource corsConfigurationSource ;
+
+    private final TenantFilter tenantFilter ;
 
     private static final String[] AUTH_WHITELIST = {
         // -- Swagger UI v2
@@ -36,13 +40,22 @@ public class SecurityConf {
         "/webjars/**",
         // -- Swagger UI v3 (OpenAPI)
         "/v3/api-docs/**",
-        "/swagger-ui/**"
+        "/swagger-ui/**" ,
+        /**
+         * ! temporoy
+         */
+        "/vehicules/**" ,
+
         // other public endpoints of your API may be appended to this array
     };
 
     @Autowired
-    SecurityConf(CorsConfigurationSource corsConfigurationSource) {
+    SecurityConf(
+        CorsConfigurationSource corsConfigurationSource ,
+        TenantFilter tenantFilter
+        ) {
         this.corsConfigurationSource = corsConfigurationSource ;
+        this.tenantFilter = tenantFilter ;
     }
 
     @Bean
@@ -67,7 +80,7 @@ public class SecurityConf {
         )
         .formLogin(AbstractHttpConfigurer::disable)
         .httpBasic(AbstractHttpConfigurer::disable)
-        
+        .addFilterAfter(tenantFilter, AuthorizationFilter.class)
         ;
 
         return http.build() ;
