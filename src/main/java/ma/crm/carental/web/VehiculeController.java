@@ -1,9 +1,12 @@
 package ma.crm.carental.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +29,7 @@ import ma.crm.carental.dtos.AssuranceResponseDto;
 import ma.crm.carental.dtos.VehRequsetDto;
 import ma.crm.carental.dtos.VehResponseDto;
 import ma.crm.carental.entities.Vehicule;
+import ma.crm.carental.exception.UnableToProccessIteamException;
 import ma.crm.carental.services.VehiculeSerivce;
 
 
@@ -40,7 +45,7 @@ public class VehiculeController {
 
 
     @PostMapping
-    public List<VehResponseDto> save(
+    public List<VehResponseDto> saveVehicules(
             @Valid @RequestBody List<VehRequsetDto> vehrequestList 
         ) {
             
@@ -55,12 +60,40 @@ public class VehiculeController {
         return vehiculeSerivce.vehsPaginate(page, size) ;
     }
 
-    // @DeleteMapping("/{ids}")
-    // public List<VehResponseDto> delete(
-    //     @PathVariable long ids
-    // ) {
-    //     //delete .
-    // }
+    @DeleteMapping("/{ids}")
+    public ResponseEntity<Map<String , Object>> deleteVehicules(
+        @PathVariable List<Long> ids
+    ) throws UnableToProccessIteamException {
+        Map<String , Object> response = vehiculeSerivce.deleteVehs(ids);
+
+        return new ResponseEntity<>(response , HttpStatus.OK) ;
+        
+    }
+
+    @PutMapping("/{ids}")
+    public ResponseEntity<Map<String , Object>> updateVehicules(
+                @PathVariable List<Long> ids ,
+                @RequestBody VehRequsetDto vehRequsetDto
+            ){
+        
+        
+                List<VehRequsetDto> vehRequsetDtos = new ArrayList<>() ;
+                vehRequsetDtos.add(vehRequsetDto) ;
+
+                Map<String , Object> response = vehiculeSerivce.updateVehs(vehRequsetDtos, ids) ;
+                return  new ResponseEntity<>(response , HttpStatus.OK);
+                
+    }
+
+    @GetMapping("/{id}")
+    public VehResponseDto showVehicule(
+        @PathVariable Long id
+    ) {
+
+        return vehiculeSerivce.showVeh(id) ;
+    }
+
+
 
     /**
      * @apiNote assurance conttorerlerfkkfkjfkjjdfjjf

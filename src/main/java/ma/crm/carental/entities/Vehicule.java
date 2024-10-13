@@ -1,15 +1,20 @@
 package ma.crm.carental.entities;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +32,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import ma.crm.carental.utils.JsonConverter;
 
 @Entity
 @Table(
@@ -70,6 +76,10 @@ public class Vehicule extends AbstractBaseEntity{
     @JsonIgnore
     private List<Assurance> assurances ;
 
+
+    @Column(columnDefinition = "json")
+    @Convert(converter = JsonConverter.class)
+    private Map<String , Serializable> metadata;
 
     @CreationTimestamp
     private Date createdAt ;

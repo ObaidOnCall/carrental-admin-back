@@ -1,0 +1,15 @@
+first response test :
+
+spring .
+79ms response 401
+389ms response 200 get brands
+
+
+spring with graalVM (native image)
+2ms response 401
+22ms response 200 get brands .
+
+
+
+Guzzle HTTP Client
+GitHub: Guzzle

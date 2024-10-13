@@ -1,19 +1,24 @@
 package ma.crm.carental.conf;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.Assert;
+
+import ma.crm.carental.dtos.Organization;
+import ma.crm.carental.tenantfilter.TenantContext;
+
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-
-
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,22 +43,45 @@ public class KeycloakRealmRolesGrantedAuthoritiesConverter implements Converter<
      */
     @Override
     public Collection<GrantedAuthority> convert(Jwt source) {
-        Map<String, Object> realmAccess = source.getClaim("realm_access");
-        if (Objects.isNull(realmAccess)) {
-            return Collections.emptySet();
+        
+        Map<String, Object> organizations = source.getClaim("organizations");
+        if (Objects.isNull(organizations) || organizations.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        Object roles = realmAccess.get("roles");
-        if (Objects.isNull(roles) || !Collection.class.isAssignableFrom(roles.getClass())) {
-            return Collections.emptySet();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        // Get the first organization
+        Map.Entry<String, Object> firstOrgEntry = organizations.entrySet().iterator().next();
+        String orgId = firstOrgEntry.getKey();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> organizationDetails = (Map<String, Object>) firstOrgEntry.getValue();
+
+        /**
+         * @just provide the currentTenantId here without create a spreate filter use (orgId)
+        */
+        TenantContext.setTenantId(orgId);
+        
+        /**
+         * @
+         * @
+         */
+        // Extract roles from the organization
+        Object roles = organizationDetails.get("roles");
+        if (Objects.isNull(roles) || !(roles instanceof Collection<?>)) {
+            return Collections.emptyList();
         }
 
-        var rolesCollection = (Collection<?>) roles;
+        Collection<?> rolesCollection = (Collection<?>) roles;
+        
+        // Convert roles to GrantedAuthority
+        rolesCollection.stream()
+            .filter(String.class::isInstance) // Ensure roles are strings
+            .map(role -> new SimpleGrantedAuthority(authorityPrefix  + (String) role))
+            .forEach(authorities::add);
 
-        return rolesCollection.stream()
-                .filter(String.class::isInstance) // The realm_access.role is supposed to be a list of string, for good measure we double-check that
-                .map(x -> new SimpleGrantedAuthority(authorityPrefix + x))
-                .collect(Collectors.toSet());
+        return authorities;
+
     }
 
 }

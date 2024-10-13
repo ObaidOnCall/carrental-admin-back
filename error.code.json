@@ -1,0 +1,37 @@
+[
+    {
+        "scop":"Vehicles" ,
+        "errors":[
+            {
+                "code":1 ,
+                "meaning":"vehicles have just created succfuly"
+            },
+            {
+                "code":5 ,
+                "meaning":"vehicles updated ✅"
+            } ,
+            {
+                "code":12 ,
+                "meaning":"vehicles access denied or unable to process the item"
+            }
+        ]
+    },
+
+    {
+        "scop":"Models" ,
+        "errors":[
+            {
+                "code":14 ,
+                "meaning":"Models have just created succfuly"
+            },
+            {
+                "code":15 ,
+                "meaning":"Models updated ✅"
+            } ,
+            {
+                "code":18 ,
+                "meaning":"Models access denied or unable to process the item"
+            }
+        ]
+    }
+]

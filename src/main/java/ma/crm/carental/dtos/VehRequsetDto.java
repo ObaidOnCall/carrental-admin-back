@@ -1,9 +1,12 @@
 package ma.crm.carental.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 import org.hibernate.validator.constraints.Range;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,4 +36,7 @@ public class VehRequsetDto {
 
     @NotNull
     private double price ;
+
+    @Nullable
+    private Map<String , Serializable> metadata;
 }

@@ -1,11 +1,18 @@
 package ma.crm.carental.web;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,5 +70,29 @@ public class UserController {
         return userService.showUsers( page * size, size ,jwt.getTokenValue()) ;
     }
 
+    @GetMapping("/test-user")
+    public ResponseEntity<Map<String,Object>> testUser(
+        Authentication authentication
+    ){
+        Map<String, Object> response = new HashMap<>();
+        
+        // Get the JWT from the authentication
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        
+        // Extract user info (e.g., username)
+        String username = jwt.getClaimAsString("preferred_username");
+        
+        // Extract organization and roles (use your custom converter here)
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Set<String> roles = authorities.stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toSet());
+
+        // Fill the response
+        response.put("username", username);
+        response.put("roles", roles);
+
+        return ResponseEntity.ok(response);
+    }
     
 }

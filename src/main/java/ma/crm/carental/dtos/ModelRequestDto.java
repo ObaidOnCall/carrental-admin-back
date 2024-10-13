@@ -2,6 +2,7 @@ package ma.crm.carental.dtos;
 
 import java.util.Date;
 
+import org.antlr.v4.runtime.atn.SemanticContext.OR;
 import org.hibernate.validator.constraints.Range;
 
 import jakarta.validation.constraints.NotBlank;
@@ -47,7 +48,7 @@ public class ModelRequestDto {
     private int satingCapacity ;
 
     @NotNull
-    @Range(min = 0 , max = 299)
+    @Range(min = 80 , max = 299)
     private int topSpeed ;
 
     @NotNull(message = "Doors number not null")
@@ -56,4 +57,22 @@ public class ModelRequestDto {
 
     @NotNull(message = "The Model must have a Brand")
     private Long brand ;
+
+
+
+    public boolean isParamsLowPriorityPresent(){
+
+        return getFuelType() != null || 
+           getFuelEfficiency() != 0.0 || 
+           getTransmission() != null || 
+           getEngineType() != null;
+    }
+
+
+    public boolean isParamsHightPriorityPresent() {
+        return getBrand() != null ||
+                getName() != null ||
+                getTopSpeed() != 0 ||
+                getNumberOfDoors() != 0 ;
+    }
 }

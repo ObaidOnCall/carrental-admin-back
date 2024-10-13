@@ -1,6 +1,8 @@
 package ma.crm.carental.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import ma.crm.carental.annotations.ValidateVehiculeBrands;
 import ma.crm.carental.dtos.BrandRequsetDto;
 import ma.crm.carental.dtos.BrandResponseDto;
 import ma.crm.carental.dtos.ModelRequestDto;
@@ -76,6 +79,7 @@ public class BrandService {
      * @param ownerID
      * @return
      */
+    @ValidateVehiculeBrands
     public List<ModelResponseDto> saveModels(List<ModelRequestDto> modelRequestDtos , String ownerID) {
 
         List<Model> models = brandMapper.toModel(modelRequestDtos , ownerID) ;
@@ -100,5 +104,34 @@ public class BrandService {
             // Handle the case where the brand is not found, e.g., throw an exception or return a default value
             throw new UnableToProccessIteamException("Brand not found with id: " + id);
         }
+    }
+
+    /**
+     * @we use List<ModelRequestDto> instead of ModelRequestDto object for the VehChecker
+     * @see ma.crm.carental.aspectj.VehiculeChecker.validateVehicleBrands() pointcut
+     * @param modelRequestDtos
+     * @param ids
+     * @return
+     */
+    @ValidateVehiculeBrands
+    public Map<String , Object> updateModels(List<ModelRequestDto> modelRequestDtos , List<Long> ids) {
+        int count1 = 0;
+        int count2 = 0;
+        if (modelRequestDtos.get(0).isParamsHightPriorityPresent()) {
+            count1 = modelRepo.updateModelsInBatch(ids, 
+                                                    TenantContext.getTenantId(),
+                                                    modelRequestDtos.get(0).getBrand() ,
+                                                    modelRequestDtos.get(0).getName(),
+                                                    modelRequestDtos.get(0).getTopSpeed(),
+                                                    modelRequestDtos.get(0).getNumberOfDoors());
+        }
+        else if (modelRequestDtos.get(0).isParamsLowPriorityPresent()){
+            // do somthing
+        }
+
+        Map<String , Object> response = new HashMap<>() ;
+        response.put("message",(count1 != 0 ? count1 : count2)+ " updated recodrds") ;
+        response.put("code" , 15) ;
+        return  response;
     }
 }

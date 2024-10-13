@@ -1,5 +1,6 @@
 package ma.crm.carental.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 
 @Configuration
-public class Conf {
+public class UtilsConf {
     
 
 
@@ -22,5 +23,11 @@ public class Conf {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper() ;
+    }
+
+
+    @Bean
+    public JsonConverter jsonConverter(@Autowired ObjectMapper objectMapper) {
+        return new JsonConverter(objectMapper);
     }
 }

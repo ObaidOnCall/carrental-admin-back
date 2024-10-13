@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Table(
     name = "brands" ,
     indexes = {
-        @Index(columnList = "tenantId" , name = "tenantId_idx") ,
+        @Index(name = "tenantId_idx", columnList = "tenant_id") 
     }
 )
 @Data
@@ -41,7 +41,7 @@ import lombok.NoArgsConstructor;
 public class Brand extends AbstractBaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "brand_seq")
-    @SequenceGenerator(name = "brand_seq" , sequenceName = "brand_id_seq"  , allocationSize = 20)
+    @SequenceGenerator(name = "brand_seq" , sequenceName = "brand_id_seq"  , allocationSize = 1)
     private Long id ;
 
     @Column(nullable = false)

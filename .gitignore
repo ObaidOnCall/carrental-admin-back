@@ -38,3 +38,4 @@ build/
 
 # Unignore a specific .properties file
 !application.example.properties
+src/main/resources/my-key.pub

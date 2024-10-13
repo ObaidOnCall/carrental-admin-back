@@ -41,6 +41,7 @@ public class Model extends AbstractBaseEntity{
     @SequenceGenerator(name = "model_seq" , sequenceName = "model_id_seq"  , allocationSize = 20)
     private Long id ;
 
+    @Column(nullable = false)
     private String name ;
     private Date year ;
     private String engineType ;
