@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(
     name = "models" ,
     indexes = {
-            @Index(columnList = "tenantId" , name = "tenantId_idx")
+            @Index(columnList = "tenantId" , name = "model_tenantId_idx")
     },
     uniqueConstraints = {
         @UniqueConstraint(columnNames = {"tenantId" , "name"})

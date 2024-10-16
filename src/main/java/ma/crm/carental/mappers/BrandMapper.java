@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import ma.crm.carental.dtos.BrandRequsetDto;
-import ma.crm.carental.dtos.BrandResponseDto;
-import ma.crm.carental.dtos.ModelRequestDto;
-import ma.crm.carental.dtos.ModelResponseDto;
+import ma.crm.carental.dtos.vehicule.BrandRequsetDto;
+import ma.crm.carental.dtos.vehicule.BrandResponseDto;
+import ma.crm.carental.dtos.vehicule.ModelRequestDto;
+import ma.crm.carental.dtos.vehicule.ModelResponseDto;
 import ma.crm.carental.entities.Brand;
 import ma.crm.carental.entities.Model;
 

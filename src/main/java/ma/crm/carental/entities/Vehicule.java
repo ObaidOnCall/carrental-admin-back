@@ -38,7 +38,7 @@ import ma.crm.carental.utils.JsonConverter;
 @Table(
         name = "vehicules" ,
         indexes = {
-            @Index(columnList = "tenantId" , name = "tenantId_idx")
+            @Index(columnList = "tenantId" , name = "vehicule_tenantId_idx")
         },
         uniqueConstraints = {
             @UniqueConstraint(columnNames = {"tenantId" , "matricule"})
@@ -50,7 +50,7 @@ public class Vehicule extends AbstractBaseEntity{
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "vhicule_seq")
-    @SequenceGenerator(name = "vhicule_seq" , sequenceName = "vhicule_id_seq"  , allocationSize = 20)
+    @SequenceGenerator(name = "vhicule_seq" , sequenceName = "vhicule_id_seq"  , allocationSize = 1)
     private Long id ;
 
     @Column(nullable = false)
@@ -77,9 +77,9 @@ public class Vehicule extends AbstractBaseEntity{
     private List<Assurance> assurances ;
 
 
-    @Column(columnDefinition = "json")
-    @Convert(converter = JsonConverter.class)
-    private Map<String , Serializable> metadata;
+    // @Column(columnDefinition = "json")
+    // @Convert(converter = JsonConverter.class)
+    // private Map<String , Serializable> metadata;
 
     @CreationTimestamp
     private Date createdAt ;

@@ -16,10 +16,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import ma.crm.carental.annotations.ValidateVehiculeModels;
-import ma.crm.carental.dtos.AssuranceRequestDto;
-import ma.crm.carental.dtos.AssuranceResponseDto;
-import ma.crm.carental.dtos.VehRequsetDto;
-import ma.crm.carental.dtos.VehResponseDto;
+import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
+import ma.crm.carental.dtos.vehicule.AssuranceResponseDto;
+import ma.crm.carental.dtos.vehicule.VehRequsetDto;
+import ma.crm.carental.dtos.vehicule.VehResponseDto;
 import ma.crm.carental.entities.Assurance;
 import ma.crm.carental.entities.Vehicule;
 import ma.crm.carental.exception.UnableToProccessIteamException;
@@ -36,7 +36,7 @@ import ma.crm.carental.utils.JsonConverter;
 @Transactional
 public class VehiculeSerivce {
     
-	private static final String ERRORMESSAGE1 = "access denied or unable to process the item ,please use a valid data" ;
+	private static final String ERRORMESSAGE1 = "access denied or unable to process the item within vhicule,please use a valid data" ;
 
 
     private final VehiculeRepo vehiculeRepo ;
@@ -82,7 +82,7 @@ public class VehiculeSerivce {
         Map<String , Object> response = new HashMap<>() ;
         try {
             
-            vehiculeRepo.deleteAllByIdInBatch(ids);
+            vehiculeRepo.deleteVehiculesByIdsAndTenantId(ids , TenantContext.getTenantId());
     
     
             response.put("message", "deleted secuufly") ;
@@ -104,8 +104,8 @@ public class VehiculeSerivce {
                                                         TenantContext.getTenantId() ,
                                                         vehRequsetDtos.get(0).getMatricule(),
                                                         vehRequsetDtos.get(0).getModel(), 
-                                                        vehRequsetDtos.get(0).getPrice(),
-                                                        jsonConverter.convertToDatabaseColumn(vehRequsetDtos.get(0).getMetadata()) 
+                                                        vehRequsetDtos.get(0).getPrice()
+                                                        // jsonConverter.convertToDatabaseColumn(vehRequsetDtos.get(0).getMetadata()) 
                                                     ) ;
         
         Map<String , Object> response = new HashMap<>() ;

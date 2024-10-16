@@ -1,7 +1,9 @@
 package ma.crm.carental.aspectj;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.aspectj.lang.JoinPoint;
@@ -13,9 +15,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
-import ma.crm.carental.dtos.AssuranceRequestDto;
-import ma.crm.carental.dtos.ModelRequestDto;
-import ma.crm.carental.dtos.VehRequsetDto;
+import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
+import ma.crm.carental.dtos.vehicule.ModelRequestDto;
+import ma.crm.carental.dtos.vehicule.ModelDtoInterface;
+import ma.crm.carental.dtos.vehicule.VehRequsetDto;
 import ma.crm.carental.exception.UnableToProccessIteamException;
 import ma.crm.carental.tenantfilter.TenantContext;
 
@@ -62,10 +65,10 @@ public class VehiculeChecker {
     	// Assuming the first argument is always your DTO
 		if (args.length > 0 && args[0] instanceof List) {
 				@SuppressWarnings("unchecked")
-				List<ModelRequestDto> modelRequestDtos = (List<ModelRequestDto>) args[0];
+				List<ModelDtoInterface> modelRequestDtos = (List<ModelDtoInterface>) args[0];
 
 				List<Long> brands = modelRequestDtos.stream()
-						.map(ModelRequestDto::getBrand)
+						.map(ModelDtoInterface::getBrand)
 						.filter(Objects::nonNull) // Filter out null models
 						.collect(Collectors.toList());
 
@@ -114,32 +117,37 @@ public class VehiculeChecker {
 
 
 	private void validateModels(List<Long> models) throws UnableToProccessIteamException {
+
+		Set<Long> uniqueModels = new HashSet<>(models);
+
 		String hql = "SELECT COUNT(m.id) FROM Model m WHERE m.tenantId = :tenantId AND m.id IN :modelIds";
 		
 		Query query = entityManager.createQuery(hql);
 		query.setParameter("tenantId", TenantContext.getTenantId());
-		query.setParameter("modelIds", models);
+		query.setParameter("modelIds", uniqueModels);
 		long number = (long) query.getSingleResult();
 		
 		entityManager.clear();
 		
-		if (number != models.size()) {
+		if (number != uniqueModels.size()) {
 			throw new UnableToProccessIteamException(VehiculeChecker.ERRORMESSAGE);
 		}
 	}
 
 
 	private void validateBrands(List<Long> brands) throws UnableToProccessIteamException {
+
+		Set<Long> uniqueBrands = new HashSet<>(brands) ;
 		String hql = "SELECT COUNT(b.id) FROM Brand b WHERE b.tenantId = :tenantId AND b.id IN :brandIds";
 		
 		Query query = entityManager.createQuery(hql);
 		query.setParameter("tenantId", TenantContext.getTenantId());
-		query.setParameter("brandIds", brands);
+		query.setParameter("brandIds", uniqueBrands);
 		long number = (long) query.getSingleResult();
 		
 		entityManager.clear();
 		
-		if (number != brands.size()) {
+		if (number != uniqueBrands.size()) {
 			throw new UnableToProccessIteamException(VehiculeChecker.ERRORMESSAGE);
 		}
 	}

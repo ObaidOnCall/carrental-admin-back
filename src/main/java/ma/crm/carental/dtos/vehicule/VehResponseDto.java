@@ -1,42 +1,35 @@
-package ma.crm.carental.dtos;
+package ma.crm.carental.dtos.vehicule;
+
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
-import org.hibernate.validator.constraints.Range;
-
-import jakarta.annotation.Nullable;
+import ch.qos.logback.core.model.Model;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 import ma.crm.carental.entities.Brand;
-import ma.crm.carental.entities.Model;
 
-// 🛵
-@Getter @Setter
-public class VehRequsetDto {
 
-    @NotBlank
+@Setter @Getter
+public class VehResponseDto {
+    
+    private Long id ;
+
     private String matricule ;
 
-    // @NotNull
-    // private Long brand ;
+    private Brand brand ;
 
-    @NotNull
-    private Long model ;
+    private Model model ;
 
     private String color ;
 
     private int mileage ;
 
-    private Date year ;
-
     @NotNull
     private double price ;
 
-    @Nullable
     private Map<String , Serializable> metadata;
 }

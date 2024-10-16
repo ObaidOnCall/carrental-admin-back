@@ -11,10 +11,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import ma.crm.carental.annotations.ValidateVehiculeBrands;
-import ma.crm.carental.dtos.BrandRequsetDto;
-import ma.crm.carental.dtos.BrandResponseDto;
-import ma.crm.carental.dtos.ModelRequestDto;
-import ma.crm.carental.dtos.ModelResponseDto;
+import ma.crm.carental.dtos.vehicule.BrandRequsetDto;
+import ma.crm.carental.dtos.vehicule.BrandResponseDto;
+import ma.crm.carental.dtos.vehicule.ModelRequestDto;
+import ma.crm.carental.dtos.vehicule.ModelResponseDto;
+import ma.crm.carental.dtos.vehicule.ModelUpdateRequestDto;
 import ma.crm.carental.entities.Brand;
 import ma.crm.carental.entities.Model;
 import ma.crm.carental.exception.UnableToProccessIteamException;
@@ -114,7 +115,7 @@ public class BrandService {
      * @return
      */
     @ValidateVehiculeBrands
-    public Map<String , Object> updateModels(List<ModelRequestDto> modelRequestDtos , List<Long> ids) {
+    public Map<String , Object> updateModels(List<ModelUpdateRequestDto> modelRequestDtos , Long[] ids) {
         int count1 = 0;
         int count2 = 0;
         if (modelRequestDtos.get(0).isParamsHightPriorityPresent()) {

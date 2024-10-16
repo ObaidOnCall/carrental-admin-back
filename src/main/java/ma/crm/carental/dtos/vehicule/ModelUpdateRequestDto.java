@@ -1,25 +1,23 @@
-package ma.crm.carental.dtos;
+package ma.crm.carental.dtos.vehicule;
 
 import java.util.Date;
+import java.util.Optional;
 
-import org.antlr.v4.runtime.atn.SemanticContext.OR;
 import org.hibernate.validator.constraints.Range;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 
 @Data
-public class ModelRequestDto {
+public class ModelUpdateRequestDto implements ModelDtoInterface{
     
-    @NotBlank
     @Size(min = 5 , max =  30)
-    private String name ;
+    private  String name ;
     
     private Date year ;
+
 
     @Size(min = 5 , max =  15)
     private String engineType ;
@@ -47,15 +45,13 @@ public class ModelRequestDto {
 
     private int satingCapacity ;
 
-    @NotNull
     @Range(min = 80 , max = 299)
     private int topSpeed ;
 
-    @NotNull(message = "Doors number not null")
-    @Range(min= 2, max = 8)
-    private int numberOfDoors ;
+    
 
-    @NotNull(message = "The Model must have a Brand")
+    private @Range(min= 0, max = 8) int numberOfDoors;
+
     private Long brand ;
 
 

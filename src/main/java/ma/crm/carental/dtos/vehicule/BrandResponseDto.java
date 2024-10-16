@@ -1,4 +1,4 @@
-package ma.crm.carental.dtos;
+package ma.crm.carental.dtos.vehicule;
 
 
 import java.util.List;

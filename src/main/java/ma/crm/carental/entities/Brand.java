@@ -2,6 +2,7 @@ package ma.crm.carental.entities;
 
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.TenantId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Table(
     name = "brands" ,
     indexes = {
-        @Index(name = "tenantId_idx", columnList = "tenant_id") 
+        @Index(columnList = "tenant_id" , name = "brand_tenantId_idx") 
     }
 )
 @Data
@@ -52,6 +53,7 @@ public class Brand extends AbstractBaseEntity{
 
     @OneToMany(cascade = CascadeType.REMOVE , mappedBy = "brand" , fetch = FetchType.LAZY)
     @JsonProperty(access = Access.WRITE_ONLY)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Model> models ;
     
 }

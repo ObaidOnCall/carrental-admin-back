@@ -31,8 +31,8 @@ public interface VehiculeRepo extends JpaRepository<Vehicule , Long>{
         @Param("tenant_id") String tenant ,
         @Param("matricule") String matricule ,
         @Param("model") Long model ,
-        @Param("price") double price ,
-        @Param("metadata") String metadata 
+        @Param("price") double price
+        // @Param("metadata") String metadata 
     ) ;
 
     @Query(value = "SELECT v FROM Vehicule v WHERE v.id =:id AND v.tenantId =:tenant_id")
@@ -40,4 +40,12 @@ public interface VehiculeRepo extends JpaRepository<Vehicule , Long>{
         @Param("id") Long id ,
         @Param("tenant_id") String tenant
     ) ;
+
+
+    @Modifying
+    @Query(value = "DELETE FROM vehicules v WHERE v.id IN :ids AND v.tenant_id = :tenantId", nativeQuery = true)
+    void deleteVehiculesByIdsAndTenantId(
+        @Param("ids") List<Long> ids,
+        @Param("tenantId") String tenantId
+    );
 }

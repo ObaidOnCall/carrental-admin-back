@@ -16,13 +16,14 @@ import ma.crm.carental.entities.Model;
 public interface ModelRepo extends JpaRepository<Model , Long>{
     
     @Modifying
-    @Query(value = "UPDATE models m SET m.name = COALESCE(:name, m.name),"+
-                    "m.brand_id = COALESCE(:brand, m.brand_id), "+
-                    "m.top_speed = COALESCE(:top_speed, m.top_speed),"+
-                    "m.number_of_doors = COALESCE(:number_of_doors, m.number_of_doors)"+
-                    "WHERE m.id IN :ids AND m.tenant_id =:tenant_id" , nativeQuery = true) 
+    @Query(value = "UPDATE models SET " +
+                    "name = COALESCE(:name, name), " +
+                    "brand_id = COALESCE(:brand, brand_id), " +
+                    "top_speed = COALESCE(:top_speed, top_speed), " +
+                    "number_of_doors = COALESCE(:number_of_doors, number_of_doors) " +
+                    "WHERE id = ANY(:ids) AND tenant_id = :tenant_id", nativeQuery = true)  
     int updateModelsInBatch(
-        @Param("ids") List<Long> ids ,
+        @Param("ids") Long[] ids ,
         @Param("tenant_id") String tenant ,
         @Param("brand") Long brand ,
         @Param("name") String name ,

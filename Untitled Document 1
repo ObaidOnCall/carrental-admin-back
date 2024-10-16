@@ -13,3 +13,54 @@ spring with graalVM (native image)
 
 Guzzle HTTP Client
 GitHub: Guzzle
+
+
+[
+  {
+    "name": "Vehicle-1",
+    "year": "2024-10-14T22:37:14.157Z",
+    "topSpeed": 200,
+    "numberOfDoors": 4,
+    "brand": 1
+  },
+  {
+    "name": "Vehicle-2",
+    "year": "2024-10-14T22:37:14.157Z",
+    "topSpeed": 220,
+    "numberOfDoors": 4,
+    "brand": 2
+  },
+  {
+    "name": "Vehicle-3",
+    "year": "2024-10-14T22:37:14.157Z",
+    "topSpeed": 180,
+    "numberOfDoors": 4,
+    "brand": 3
+  },
+  {
+    "name": "Vehicle-4",
+    "year": "2024-10-14T22:37:14.157Z",
+    "topSpeed": 190,
+    "numberOfDoors": 4,
+    "brand": 4
+  },
+  {
+    "name": "Vehicle-5",
+    "year": "2024-10-14T22:37:14.157Z",
+    "topSpeed": 200,
+    "numberOfDoors": 4,
+    "brand": 5
+  },
+  {
+    "name": "Vehicle-6",
+    "topSpeed": 220,
+    "numberOfDoors": 4,
+    "brand": 6
+  },
+  {
+    "name": "Vehicle-7",
+    "topSpeed": 180,
+    "numberOfDoors": 4,
+    "brand": 7
+  }
+]

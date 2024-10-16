@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import ma.crm.carental.dtos.AssuranceRequestDto;
-import ma.crm.carental.dtos.AssuranceResponseDto;
-import ma.crm.carental.dtos.VehRequsetDto;
-import ma.crm.carental.dtos.VehResponseDto;
+import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
+import ma.crm.carental.dtos.vehicule.AssuranceResponseDto;
+import ma.crm.carental.dtos.vehicule.VehRequsetDto;
+import ma.crm.carental.dtos.vehicule.VehResponseDto;
 import ma.crm.carental.entities.Vehicule;
 import ma.crm.carental.exception.UnableToProccessIteamException;
 import ma.crm.carental.services.VehiculeSerivce;

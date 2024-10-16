@@ -24,11 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
-import ma.crm.carental.dtos.BrandRequsetDto;
-import ma.crm.carental.dtos.BrandResponseDto;
-import ma.crm.carental.dtos.ModelRequestDto;
-import ma.crm.carental.dtos.ModelResponseDto;
-import ma.crm.carental.dtos.VehRequsetDto;
+import ma.crm.carental.dtos.vehicule.BrandRequsetDto;
+import ma.crm.carental.dtos.vehicule.BrandResponseDto;
+import ma.crm.carental.dtos.vehicule.ModelRequestDto;
+import ma.crm.carental.dtos.vehicule.ModelResponseDto;
+import ma.crm.carental.dtos.vehicule.ModelUpdateRequestDto;
+import ma.crm.carental.dtos.vehicule.VehRequsetDto;
 import ma.crm.carental.exception.UnableToProccessIteamException;
 import ma.crm.carental.services.BrandService;
 
@@ -92,7 +93,7 @@ public class BrandController {
         @AuthenticationPrincipal Jwt jwt
     ) {
         /**
-         * @see you must check the brand sended if is it owend by the current client .
+         * @see you check the brand sended if is it owend by the current client .
          */
         return brandService.saveModels(modelRequestDtos , (String)jwt.getClaims().get("sub")) ;
     }
@@ -105,12 +106,12 @@ public class BrandController {
     }
 
     
-    @PutMapping("/all/models/{ids}")
+    @PutMapping("/models/{ids}")
     public ResponseEntity<Map<String , Object>> updateModels(
-        @PathVariable List<Long> ids ,
-        @RequestBody ModelRequestDto modelRequestDto 
+        @PathVariable Long[] ids ,
+        @RequestBody ModelUpdateRequestDto modelRequestDto 
     ) {
-        List<ModelRequestDto> modelRequestDtos = new ArrayList<>() ;
+        List<ModelUpdateRequestDto> modelRequestDtos = new ArrayList<>() ;
         modelRequestDtos.add(modelRequestDto) ;
 
         Map<String , Object> response = brandService.updateModels(modelRequestDtos, ids) ;
