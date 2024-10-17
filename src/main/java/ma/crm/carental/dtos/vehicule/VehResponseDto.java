@@ -20,9 +20,9 @@ public class VehResponseDto {
 
     private String matricule ;
 
-    private Brand brand ;
+    // private Brand brand ;
 
-    private Model model ;
+    private ModelResponseDto model ;
 
     private String color ;
 

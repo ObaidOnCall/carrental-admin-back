@@ -108,4 +108,22 @@ public class BrandMapper {
 
         return modelResponseDtos ;
     }
+
+
+    public ModelResponseDto fromModel (Model model) {
+
+
+
+        ModelResponseDto modelResponseDto = new ModelResponseDto() ;
+        // BrandResponseDto brandResponseDto = new BrandResponseDto() ;
+
+        BeanUtils.copyProperties(model, modelResponseDto);
+        // BeanUtils.copyProperties(model.getBrand(), brandResponseDto);
+
+        // modelResponseDto.setBrand(brandResponseDto);
+            
+        
+
+        return modelResponseDto ;
+    }
 }

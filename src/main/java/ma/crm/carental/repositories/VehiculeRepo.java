@@ -13,12 +13,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import ma.crm.carental.dtos.vehicule.VehResponseDto;
 import ma.crm.carental.entities.Vehicule;
 
 
 public interface VehiculeRepo extends JpaRepository<Vehicule , Long>{
     
-    Page<Vehicule> findByTenantId(String tenantId ,Pageable pageable) ;
+    Page<VehResponseDto> findByTenantId(String tenantId ,Pageable pageable) ;
 
     @Modifying
     @Query(value = "UPDATE vehicules v SET v.matricule = COALESCE(:matricule, v.matricule),"+

@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import ma.crm.carental.conf.KeycloakJwtAuthenticationConverter;
-import ma.crm.carental.tenantfilter.TenantFilter;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -41,8 +40,6 @@ import org.springframework.core.io.Resource;
 public class SecurityConf {
     
     private final CorsConfigurationSource corsConfigurationSource ;
-
-    private final TenantFilter tenantFilter ;
 
     @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
     private Resource publicKeyResource;
@@ -72,11 +69,9 @@ public class SecurityConf {
 
     @Autowired
     SecurityConf(
-        CorsConfigurationSource corsConfigurationSource ,
-        TenantFilter tenantFilter
+        CorsConfigurationSource corsConfigurationSource 
         ) {
         this.corsConfigurationSource = corsConfigurationSource ;
-        this.tenantFilter = tenantFilter ;
     }
 
     @Bean
@@ -104,9 +99,7 @@ public class SecurityConf {
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
         .formLogin(AbstractHttpConfigurer::disable)
-        .httpBasic(AbstractHttpConfigurer::disable)
-        // .addFilterAfter(tenantFilter, AuthorizationFilter.class)
-        ;
+        .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build() ;
     }

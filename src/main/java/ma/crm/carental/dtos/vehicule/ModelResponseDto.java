@@ -13,7 +13,6 @@ import ma.crm.carental.entities.Brand;
 @Data
 public class ModelResponseDto {
     
-    private Long id ;
     private String name ;
     private Date year ;
 

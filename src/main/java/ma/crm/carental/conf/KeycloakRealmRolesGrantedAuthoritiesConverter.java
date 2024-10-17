@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.Assert;
 
+import lombok.extern.slf4j.Slf4j;
 import ma.crm.carental.dtos.Organization;
 import ma.crm.carental.tenantfilter.TenantContext;
 
@@ -23,6 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+
+@Slf4j
 public class KeycloakRealmRolesGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>>{
     private String authorityPrefix = "";
 
@@ -52,15 +55,21 @@ public class KeycloakRealmRolesGrantedAuthoritiesConverter implements Converter<
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         // Get the first organization
+
+
         Map.Entry<String, Object> firstOrgEntry = organizations.entrySet().iterator().next();
         String orgId = firstOrgEntry.getKey();
+        
         @SuppressWarnings("unchecked")
         Map<String, Object> organizationDetails = (Map<String, Object>) firstOrgEntry.getValue();
 
         /**
          * @just provide the currentTenantId here without create a spreate filter use (orgId)
         */
+
         TenantContext.setTenantId(orgId);
+        log.warn("Tenant ID set: {} 🔖", TenantContext.getTenantId());
+
         
         /**
          * @

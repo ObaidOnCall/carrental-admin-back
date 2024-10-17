@@ -18,6 +18,13 @@ import ma.crm.carental.entities.Vehicule;
 @Component
 public class VehiculeMapper {
     
+    private final BrandMapper brandMapper ;
+
+    VehiculeMapper(
+        BrandMapper brandMapper 
+    ) {
+        this.brandMapper = brandMapper ;
+    }
 
     public List<Vehicule> toVeh (List<VehRequsetDto> vehRequsetDtos) {
 
@@ -52,6 +59,9 @@ public class VehiculeMapper {
         for (Vehicule veh : vehicules) {
 
             VehResponseDto vehresponse = new VehResponseDto() ;
+            vehresponse.setModel(
+                brandMapper.fromModel(veh.getModel())
+            );
             BeanUtils.copyProperties(veh, vehresponse);
             vehResponses.add(vehresponse) ;
         }

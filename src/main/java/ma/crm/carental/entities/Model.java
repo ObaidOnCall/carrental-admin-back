@@ -75,7 +75,7 @@ public class Model extends AbstractBaseEntity{
     @Column(nullable = false)
     private int numberOfDoors ;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Brand brand ;
 }
