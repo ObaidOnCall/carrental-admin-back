@@ -116,7 +116,17 @@ public class SecurityConf {
     public JwtDecoder jwtDecoder() {
         try {
             // Read the public key from the specified location
-            String publicKeyPEM = new String(Files.readAllBytes(publicKeyResource.getFile().toPath()));
+            // String publicKeyPEM = new String(Files.readAllBytes(publicKeyResource.getFile().toPath()));
+            /**
+             * ! do not do it in producation env
+             */
+
+                String publicKeyPEM = "-----BEGIN PUBLIC KEY-----\n" + //
+                        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt7UVwQPra71PcAFzmr1g9XP/iT2CCaOE40n95KGAqS2TMvuX7wJfHZ+K0IkI3lOjFVDu7vpW/JzsK2vGdKadY1mPdYWcjlaSwJWdVSnzVkqI5J0NDLTOg8P+RlbB80myVX+pFeRqtcEy8zUKraxTZhZdAv28VkzG0N3+gFqwNHb+fa1Cmp8tWk314M+UtyktS9ZxEGXdmJaNwncRCzv6Cr0bJJRtpAJtipp2yAcgeLfqAEcjkwSoE+msRkhVoflV4IWLH81e+pryeDeQGnNsAukBg6RPH4qpS66JKjFsQPiEffUYUDh+hWXxxNc6PPZMmVGMIEl2s9ocl4fw4fs+rQIDAQAB\n" + //
+                        "-----END PUBLIC KEY-----" ;
+             /**
+              * !
+              */
             publicKeyPEM = publicKeyPEM.replace("-----BEGIN PUBLIC KEY-----", "")
                                        .replace("-----END PUBLIC KEY-----", "")
                                        .replaceAll("\\s+", "");
