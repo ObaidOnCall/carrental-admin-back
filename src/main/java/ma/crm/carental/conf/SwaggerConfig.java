@@ -1,5 +1,6 @@
 package ma.crm.carental.conf;
 
+import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -7,14 +8,29 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI customOpenAPI() {
+        @Value("${swagger.server-urls}")
+        private List<String> serverUrls;
+
+        @Bean
+        public OpenAPI customOpenAPI() {
+        
+        // Map the URLs to Server objects for Swagger
+        List<Server> servers = serverUrls.stream()
+                .map(url -> new Server().url(url))
+                .collect(Collectors.toList());
+        
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info().title("Car Renatl Service")
@@ -34,6 +50,7 @@ public class SwaggerConfig {
                                                 .scheme("bearer")
                                                 .bearerFormat("JWT")
                                 )
-                );
-    }
+                )
+                .servers(servers);
+        }
 }
