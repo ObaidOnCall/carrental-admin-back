@@ -60,22 +60,26 @@ public class Vehicule extends AbstractBaseEntity{
     // @JoinColumn(nullable = false)
     // private Brand brand ;
 
+    
+    private String color ;
+    
+    @Column(nullable = false)
+    private int mileage ;
+    
+    @Column(nullable = false)
+    private double price ;
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Model model ;
-
-    private String color ;
-
-    @Column(nullable = false)
-    private int mileage ;
-
-    @Column(nullable = false)
-    private double price ;
 
     @OneToMany(mappedBy = "vehicule" , fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Assurance> assurances ;
 
+    @OneToMany(mappedBy = "vehicule" , fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Contract> contracts ;
 
     // @Column(columnDefinition = "json")
     // @Convert(converter = JsonConverter.class)
