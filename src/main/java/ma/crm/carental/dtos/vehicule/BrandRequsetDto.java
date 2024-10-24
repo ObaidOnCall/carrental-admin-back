@@ -19,7 +19,7 @@ import lombok.Setter;
 public class BrandRequsetDto {
     
     @NotBlank
-    @Size(min = 3 , max = 20)
+    @Size(min = 3 , max = 64)
     private String name ;
 
     private String countryOfOrigin ;

@@ -49,7 +49,7 @@ public class Client extends AbstractBaseEntity{
 
     private String licence ;
 
-    @Column(nullable = false , length = 24)
+    @Column(nullable = false , length = 255)
     private String nationality ;
 
     @Column(nullable = false)

@@ -43,6 +43,7 @@ public class ClientMapper {
 
         return clients.stream().map(
             client ->ClientResponseDto.builder()
+                                    .id(client.getId())
                                     .firstname(client.getFirstname())
                                     .lastname(client.getLastname())
                                     .email(client.getEmail())

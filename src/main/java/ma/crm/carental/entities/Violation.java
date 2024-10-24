@@ -48,7 +48,7 @@ public class Violation extends AbstractBaseEntity{
     @Column
     private double finAmount ;
 
-    private ZonedDateTime date ;
+    private Date date ;
 
     private Boolean isPaid ;
 
@@ -56,7 +56,7 @@ public class Violation extends AbstractBaseEntity{
     @ManyToOne
     private Client client ;
 
-    @JoinColumn(name = "charge_id" , nullable = false)
+    @JoinColumn(name = "charge_id" , nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Charge charge ;
 
