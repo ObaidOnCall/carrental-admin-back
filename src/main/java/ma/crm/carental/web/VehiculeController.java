@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import ma.crm.carental.annotations.ValidateRequest;
 import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
 import ma.crm.carental.dtos.vehicule.AssuranceResponseDto;
 import ma.crm.carental.dtos.vehicule.VehRequsetDto;
@@ -48,22 +49,11 @@ public class VehiculeController {
 
 
     @PostMapping
+    @ValidateRequest
     public List<VehResponseDto> saveVehicules(
             @Valid @RequestBody List<VehRequsetDto> vehrequestList ,
             BindingResult bindingResult
         ) {
-        
-        if (bindingResult.hasErrors()) {
-            List<ValidationErrorResponse> errors = new ArrayList<>();
-            
-            bindingResult.getFieldErrors().forEach(fieldError -> {
-                String field = fieldError.getField();
-                String message = fieldError.getDefaultMessage();
-                errors.add(new ValidationErrorResponse(field, message)) ;
-            });
-            
-            throw new ValidationException(errors) ;
-        }
             
         return vehiculeSerivce.saveVehs(vehrequestList ) ;
     }

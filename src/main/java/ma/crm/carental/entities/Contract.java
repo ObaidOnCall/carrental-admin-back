@@ -97,6 +97,9 @@ public class Contract extends AbstractBaseEntity{
     @OneToMany(mappedBy = "contract")
     private List<Billing> billings;
 
+    @OneToMany(mappedBy = "contract")
+    private List<Charge> charges ;
+
     @JoinColumn(name = "client_id" , nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client ;
