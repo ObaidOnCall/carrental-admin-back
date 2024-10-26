@@ -28,7 +28,9 @@ public class ViolationMapper {
                                             .isPaid(violationRequestDto.getIsPaid())
                                             .client(Client.builder().id(violationRequestDto.getClient()).build())
                                             .charge(
-                                                violationRequestDto.getCharge() != 0 ? Charge.builder().id(violationRequestDto.getCharge()).build() : null
+                                                violationRequestDto.getCharge() != null && violationRequestDto.getCharge() != 0 
+                                                ? Charge.builder().id(violationRequestDto.getCharge()).build() 
+                                                : null
                                             )
                                             .date(violationRequestDto.getDate())
                                             .build()
@@ -38,19 +40,20 @@ public class ViolationMapper {
 
     public List<ViolationResponseDto> fromViolation(List<Violation> violations) {
 
+        // .client(
+        //     ClientResponseDto.builder()
+        //                     .firstname(violation.getClient().getFirstname())
+        //                     .lastname(violation.getClient().getLastname())
+        //                     .id(violation.getClient().getId())
+        //                     .build()
+        // )
         return violations.stream().map(
             violation ->    ViolationResponseDto.builder()
                             .id(violation.getId())
-                            .client(
-                                ClientResponseDto.builder()
-                                                .firstname(violation.getClient().getFirstname())
-                                                .lastname(violation.getClient().getLastname())
-                                                .id(violation.getClient().getId())
-                                                .build()
-                            )
                             .description(violation.getDescription())
                             .finAmount(violation.getFinAmount())
                             .isPaid(violation.getIsPaid())
+                            .client(violation.getClient().getId())
                             .date(violation.getDate()) 
                             .build()
         ).collect(Collectors.toList()) ;

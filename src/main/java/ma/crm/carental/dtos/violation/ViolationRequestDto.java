@@ -2,21 +2,31 @@ package ma.crm.carental.dtos.violation;
 
 import java.util.Date;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 
 @Data
 public class ViolationRequestDto {
     
-    private String description ;
+    @Size(max = 255, message = "Description can be up to 255 characters.")
+    private String description;
 
-    private double finAmount ;
+    @PositiveOrZero(message = "Fine amount must be zero or positive.")
+    private double finAmount;
 
-    private Date date ;
+    @PastOrPresent(message = "Date must be in the past or present.")
+    private Date date;
 
-    private Boolean isPaid ;
+    @NotNull(message = "Payment status is required.")
+    private Boolean isPaid;
 
-    private long client ;
+    @NotNull(message = "Client ID is required.")
+    private Long client;
 
-    private long charge ;
+    // @NotNull(message = "Charge ID is required.")
+    private Long charge;
 }

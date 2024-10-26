@@ -5,9 +5,6 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.type.NumericBooleanConverter;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -75,6 +72,11 @@ public class Billing extends AbstractBaseEntity{
 
     private Double amountTTC ;
 
+    @Column(name = "deleted")
+    @Builder.Default
+    private Boolean deleted = false;
+
+
     @Column
     private int tva ;
 
@@ -87,8 +89,8 @@ public class Billing extends AbstractBaseEntity{
 		joinColumns = @JoinColumn(name = "billing_fk"),
 		inverseJoinColumns = @JoinColumn(name = "payment_fk")
     )
-    @SoftDelete(columnName = "gone", converter = NumericBooleanConverter.class)
     private List<Payment> payments ;
+
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)

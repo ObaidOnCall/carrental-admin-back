@@ -68,6 +68,9 @@ public class Vehicule extends AbstractBaseEntity{
     
     @Column(nullable = false)
     private double price ;
+
+    @Column(length = 255)
+    private String description ;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
