@@ -81,9 +81,9 @@ public class BrandService {
      * @return
      */
     @ValidateVehiculeBrands
-    public List<ModelResponseDto> saveModels(List<ModelRequestDto> modelRequestDtos , String ownerID) {
+    public List<ModelResponseDto> saveModels(List<ModelRequestDto> modelRequestDtos) {
 
-        List<Model> models = brandMapper.toModel(modelRequestDtos , ownerID) ;
+        List<Model> models = brandMapper.toModel(modelRequestDtos) ;
 
         return brandMapper.fromModel(modelRepo.saveAllAndFlush(models)) ;
 

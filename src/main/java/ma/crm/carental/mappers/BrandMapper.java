@@ -67,7 +67,7 @@ public class BrandMapper {
      * @param ownerID
      * @return
      */
-    public List<Model> toModel (List<ModelRequestDto> modelRequestDtos , String ownerID) {
+    public List<Model> toModel (List<ModelRequestDto> modelRequestDtos) {
 
         List<Model> models = new ArrayList<>() ;
 

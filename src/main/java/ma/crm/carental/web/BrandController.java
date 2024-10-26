@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
+import ma.crm.carental.annotations.ValidateRequest;
 import ma.crm.carental.dtos.vehicule.BrandRequsetDto;
 import ma.crm.carental.dtos.vehicule.BrandResponseDto;
 import ma.crm.carental.dtos.vehicule.ModelRequestDto;
@@ -31,6 +33,8 @@ import ma.crm.carental.dtos.vehicule.ModelResponseDto;
 import ma.crm.carental.dtos.vehicule.ModelUpdateRequestDto;
 import ma.crm.carental.dtos.vehicule.VehRequsetDto;
 import ma.crm.carental.exception.UnableToProccessIteamException;
+import ma.crm.carental.exception.ValidationErrorResponse;
+import ma.crm.carental.exception.ValidationException;
 import ma.crm.carental.services.BrandService;
 
 
@@ -51,9 +55,11 @@ public class BrandController {
      */
 
     @PostMapping
+    @ValidateRequest
     public List<BrandResponseDto> save(
             @Valid @RequestBody List<BrandRequsetDto> brandRequsetDtos,
-            @AuthenticationPrincipal Jwt jwt
+            @AuthenticationPrincipal Jwt jwt ,
+            BindingResult bindingResult
         ){
         
         return brandService.saveBrands(brandRequsetDtos , (String)jwt.getClaims().get("sub")) ;
@@ -88,14 +94,15 @@ public class BrandController {
 
 
     @PostMapping("/models")
+    @ValidateRequest
     public List<ModelResponseDto> saveModel(
         @Valid @RequestBody List<ModelRequestDto> modelRequestDtos ,
-        @AuthenticationPrincipal Jwt jwt
+        BindingResult bindingResult
     ) {
         /**
          * @see you check the brand sended if is it owend by the current client .
          */
-        return brandService.saveModels(modelRequestDtos , (String)jwt.getClaims().get("sub")) ;
+        return brandService.saveModels(modelRequestDtos) ;
     }
 
     @GetMapping("/{id}/models")

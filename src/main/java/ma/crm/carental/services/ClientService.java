@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import jakarta.persistence.NoResultException;
 import ma.crm.carental.dtos.client.ClientRequestDto;
@@ -30,14 +31,17 @@ public class ClientService {
 
     private final ClientRepo clientRepo ;
     private final ClientMapper clientMapper ;
+    private final Validator validator ;
 
     @Autowired
     ClientService(
             ClientRepo clientRepo ,
-            ClientMapper clientMapper 
+            ClientMapper clientMapper ,
+            Validator validator 
         ) {
         this.clientRepo = clientRepo ;
         this.clientMapper = clientMapper ;
+        this.validator = validator ;
     }
 
 

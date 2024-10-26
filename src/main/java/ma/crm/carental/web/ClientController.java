@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
+import ma.crm.carental.annotations.ValidateRequest;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
 import ma.crm.carental.services.ClientService;
+
 
 @RestController
 @RequestMapping("/clients")
@@ -34,12 +36,22 @@ public class ClientController {
             this.clientService = clientService ;
         }
 
-
+    
+    /**
+     * {@link ma.crm.carental.annotations.ValidateRequest} it validate request and generate 
+     * {@link ma.crm.carental.exception.ValidationException} if there is any invaild data
+    * @see validate and generate the ValidationException with errors .
+    */
     @PostMapping
+    @ValidateRequest 
     List<ClientResponseDto> save(
-        @Valid @RequestBody List<ClientRequestDto> clientRequestDtos
+        @Valid @RequestBody List<ClientRequestDto> clientRequestDtos ,
+        BindingResult bindingResult
     ) {
 
+        /**
+         * @see validate and generate the ValidationException with errors .
+         */
         return clientService.saveClients(clientRequestDtos) ;
     }
 
@@ -51,10 +63,15 @@ public class ClientController {
     }
 
 
+    /**
+     *{@link ma.crm.carental.web.ClientController.save}
+     */
     @PutMapping("/{ids}")
+    @ValidateRequest
     Map<String , Object> update(
         @PathVariable List<Long> ids ,
-        @RequestBody ClientRequestDto clientRequestDto 
+        @RequestBody ClientRequestDto clientRequestDto ,
+        BindingResult bindingResult
     ){
 
         List<ClientRequestDto> clientRequestDtos = new ArrayList<>();

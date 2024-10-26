@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,8 @@ import ma.crm.carental.dtos.vehicule.VehRequsetDto;
 import ma.crm.carental.dtos.vehicule.VehResponseDto;
 import ma.crm.carental.entities.Vehicule;
 import ma.crm.carental.exception.UnableToProccessIteamException;
+import ma.crm.carental.exception.ValidationErrorResponse;
+import ma.crm.carental.exception.ValidationException;
 import ma.crm.carental.services.VehiculeSerivce;
 
 
@@ -46,8 +49,21 @@ public class VehiculeController {
 
     @PostMapping
     public List<VehResponseDto> saveVehicules(
-            @Valid @RequestBody List<VehRequsetDto> vehrequestList 
+            @Valid @RequestBody List<VehRequsetDto> vehrequestList ,
+            BindingResult bindingResult
         ) {
+        
+        if (bindingResult.hasErrors()) {
+            List<ValidationErrorResponse> errors = new ArrayList<>();
+            
+            bindingResult.getFieldErrors().forEach(fieldError -> {
+                String field = fieldError.getField();
+                String message = fieldError.getDefaultMessage();
+                errors.add(new ValidationErrorResponse(field, message)) ;
+            });
+            
+            throw new ValidationException(errors) ;
+        }
             
         return vehiculeSerivce.saveVehs(vehrequestList ) ;
     }
