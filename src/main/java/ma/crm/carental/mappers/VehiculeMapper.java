@@ -2,12 +2,14 @@ package ma.crm.carental.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
 import ma.crm.carental.dtos.vehicule.AssuranceResponseDto;
+import ma.crm.carental.dtos.vehicule.ModelResponseDto;
 import ma.crm.carental.dtos.vehicule.VehRequsetDto;
 import ma.crm.carental.dtos.vehicule.VehResponseDto;
 import ma.crm.carental.entities.Assurance;
@@ -54,19 +56,42 @@ public class VehiculeMapper {
 
     public List<VehResponseDto> fromVeh (List<Vehicule> vehicules) {
 
-        List<VehResponseDto> vehResponses = new ArrayList<>() ;
+        // List<VehResponseDto> vehResponses = new ArrayList<>() ;
 
-        for (Vehicule veh : vehicules) {
+        // for (Vehicule veh : vehicules) {
 
-            VehResponseDto vehresponse = new VehResponseDto() ;
-            vehresponse.setModel(
-                brandMapper.fromModel(veh.getModel())
-            );
-            BeanUtils.copyProperties(veh, vehresponse);
-            vehResponses.add(vehresponse) ;
-        }
+        //     VehResponseDto vehresponse = new VehResponseDto() ;
+        //     vehresponse.setModel(
+        //         brandMapper.fromModel(veh.getModel())
+        //     );
+        //     BeanUtils.copyProperties(veh, vehresponse);
+        //     vehResponses.add(vehresponse) ;
+        // }
 
-        return vehResponses ;
+        return vehicules.stream().map(
+                vehicule -> VehResponseDto.builder()
+                                            .id(vehicule.getId())
+                                            .color(vehicule.getColor())
+                                            .description(vehicule.getDescription())
+                                            .matricule(vehicule.getMatricule())
+                                            .mileage(vehicule.getMileage())
+                                            .price(vehicule.getPrice())
+                                            .model(ModelResponseDto.builder()
+                                                                    .id(vehicule.getModel().getId())
+                                                                    .engineType(vehicule.getModel().getEngineType())
+                                                                    .numberOfDoors(vehicule.getModel().getNumberOfDoors())
+                                                                    .fuelEfficiency(vehicule.getModel().getFuelEfficiency())
+                                                                    .height(vehicule.getModel().getHeight())
+                                                                    .length(vehicule.getModel().getLength())
+                                                                    .width(vehicule.getModel().getWidth())
+                                                                    .name("helloghkhdhkjkj")
+                                                                    .topSpeed(vehicule.getModel().getTopSpeed())
+                                                                    .year(vehicule.getModel().getYear())
+                                                                    .build()
+                                                                    
+                                            )
+                                            .build()
+            ).collect(Collectors.toList()) ;
     }
 
     /**
