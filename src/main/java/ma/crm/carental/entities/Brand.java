@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.TenantId;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -54,6 +55,7 @@ public class Brand extends AbstractBaseEntity{
     @OneToMany(cascade = CascadeType.REMOVE , mappedBy = "brand" , fetch = FetchType.LAZY)
     @JsonProperty(access = Access.WRITE_ONLY)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JsonBackReference
     private List<Model> models ;
     
 }

@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import jakarta.persistence.CascadeType;
@@ -74,6 +75,7 @@ public class Vehicule extends AbstractBaseEntity{
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
+    @JsonManagedReference
     private Model model ;
 
     @OneToMany(mappedBy = "vehicule" , fetch = FetchType.LAZY)
