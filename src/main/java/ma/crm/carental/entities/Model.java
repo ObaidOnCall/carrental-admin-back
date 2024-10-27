@@ -3,6 +3,9 @@ package ma.crm.carental.entities;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -79,8 +82,10 @@ public class Model extends AbstractBaseEntity{
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonManagedReference
     private Brand brand ;
 
     @OneToMany(mappedBy = "model")
+    @JsonBackReference
     private List<Vehicule> vehicules ;
 }
