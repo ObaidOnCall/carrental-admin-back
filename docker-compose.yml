@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   rental:
-    image: lasthour/rentals:1.0
+    image: lasthour/rentals:1.1
     environment:
       DB_HOST: postgres:5432
       DB_NAME: ${POSTGRES_DB}
