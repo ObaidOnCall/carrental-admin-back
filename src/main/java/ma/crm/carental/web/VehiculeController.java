@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import ma.crm.carental.annotations.ValidateRequest;
+import ma.crm.carental.annotations.ReactiveValidation;
 import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
 import ma.crm.carental.dtos.vehicule.AssuranceResponseDto;
 import ma.crm.carental.dtos.vehicule.VehRequsetDto;
@@ -49,7 +49,7 @@ public class VehiculeController {
 
 
     @PostMapping
-    @ValidateRequest
+    @ReactiveValidation
     public List<VehResponseDto> saveVehicules(
             @Valid @RequestBody List<VehRequsetDto> vehrequestList ,
             BindingResult bindingResult

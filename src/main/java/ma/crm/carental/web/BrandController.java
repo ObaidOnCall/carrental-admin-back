@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
-import ma.crm.carental.annotations.ValidateRequest;
+import ma.crm.carental.annotations.ReactiveValidation;
 import ma.crm.carental.dtos.vehicule.BrandRequsetDto;
 import ma.crm.carental.dtos.vehicule.BrandResponseDto;
 import ma.crm.carental.dtos.vehicule.ModelRequestDto;
@@ -55,7 +55,7 @@ public class BrandController {
      */
 
     @PostMapping
-    @ValidateRequest
+    @ReactiveValidation
     public List<BrandResponseDto> save(
             @Valid @RequestBody List<BrandRequsetDto> brandRequsetDtos,
             @AuthenticationPrincipal Jwt jwt ,
@@ -94,7 +94,7 @@ public class BrandController {
 
 
     @PostMapping("/models")
-    @ValidateRequest
+    @ReactiveValidation
     public List<ModelResponseDto> saveModel(
         @Valid @RequestBody List<ModelRequestDto> modelRequestDtos ,
         BindingResult bindingResult
