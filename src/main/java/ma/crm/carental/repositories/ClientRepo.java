@@ -119,6 +119,7 @@ public class ClientRepo implements ClientRepoInterface{
 
     @Override
     public List<Client> clientsWithPagination(int page, int pageSize) {
+        
         String jpql = "SELECT c FROM Client c ORDER BY c.id";
 
         TypedQuery<Client> query = em.createQuery(jpql, Client.class);
@@ -139,8 +140,6 @@ public class ClientRepo implements ClientRepoInterface{
         client = (Client) em.createQuery(hql)
                                 .setParameter("id", id)
                                 .getSingleResult() ;
-                                // .setParameter("tenantId", TenantContext.getTenantId())
-
         return client ;
     }
 }
