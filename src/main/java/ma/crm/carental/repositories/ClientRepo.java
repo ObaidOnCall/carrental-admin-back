@@ -142,4 +142,15 @@ public class ClientRepo implements ClientRepoInterface{
                                 .getSingleResult() ;
         return client ;
     }
+
+
+    @Override
+    public Long count() {
+
+        String jpql = "SELECT COUNT(c) FROM Client c";
+
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+        
+        return query.getSingleResult() ;
+    }
 }
