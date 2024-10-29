@@ -25,7 +25,7 @@ public class ViolationMapper {
                                             Violation.builder()
                                             .description(violationRequestDto.getDescription())
                                             .finAmount(violationRequestDto.getFinAmount())
-                                            .isPaid(violationRequestDto.getIsPaid())
+                                            .isPaid(violationRequestDto.isPaid())
                                             .client(Client.builder().id(violationRequestDto.getClient()).build())
                                             .charge(
                                                 violationRequestDto.getCharge() != null && violationRequestDto.getCharge() != 0 

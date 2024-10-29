@@ -46,7 +46,7 @@ public class Violation extends AbstractBaseEntity{
     private String description ;
 
     @Column
-    private double finAmount ;
+    private Double finAmount ;
 
     private Date date ;
 

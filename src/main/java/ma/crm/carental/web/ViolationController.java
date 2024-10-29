@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import ma.crm.carental.annotations.ReactiveValidation;
+import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
 import ma.crm.carental.dtos.violation.ViolationRequestDto;
 import ma.crm.carental.dtos.violation.ViolationResponseDto;
 import ma.crm.carental.services.ViolationService;
@@ -26,6 +28,7 @@ import ma.crm.carental.services.ViolationService;
 
 @RestController
 @RequestMapping("/violations")
+@Validated
 public class ViolationController {
     
 
@@ -39,10 +42,9 @@ public class ViolationController {
     }
 
     @PostMapping
-    @ReactiveValidation
+    @Validated(CreateValidationGroup.class)
     List<ViolationResponseDto> save(
-        @Valid @RequestBody List<ViolationRequestDto> violationRequestDtos ,
-        BindingResult bindingResult
+        @RequestBody @Valid List<ViolationRequestDto> violationRequestDtos
     ){
         return violationService.saveViolations(violationRequestDtos) ;
     }
@@ -55,9 +57,10 @@ public class ViolationController {
     }
 
     @PutMapping("/{ids}")
+    @Validated
     Map<String , Object> update(
         @PathVariable List<Long> ids ,
-        @RequestBody ViolationRequestDto violationRequestDto 
+        @RequestBody @Valid ViolationRequestDto violationRequestDto 
     ){
 
         List<ViolationRequestDto> violationRequestDtos = new ArrayList<>();
@@ -67,7 +70,7 @@ public class ViolationController {
 
 
     @GetMapping
-    Page<ViolationResponseDto> pagenateClients(
+    Page<ViolationResponseDto> pagenateViolations(
         @RequestParam int page ,
         @RequestParam int pageSize
     ) {
@@ -77,9 +80,9 @@ public class ViolationController {
 
 
     @GetMapping("/{id}")
-    ViolationResponseDto findCient(
+    ViolationResponseDto findViolation(
         @PathVariable long id 
     ) {
-        return violationService.findClient(id) ;
+        return violationService.findViolation(id) ;
     }
 }

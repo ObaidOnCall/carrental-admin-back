@@ -82,7 +82,7 @@ public class ViolationRepo implements ViolationRepoInterface{
 
             int updatedRecords = em.createQuery(jpql)
                     .setParameter("description", violation.getDescription())
-                    .setParameter("finAmount", violation.getFinAmount())
+                    .setParameter("finAmount", violation.getFinAmount() != null ? violation.getFinAmount() : null)
                     .setParameter("date", violation.getDate())
                     .setParameter("isPaid", violation.getIsPaid())
                     .setParameter("clientId", violation.getClient() != null ? violation.getClient().getId() : null)

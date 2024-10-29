@@ -7,6 +7,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
 
 
 @Data
@@ -16,15 +17,15 @@ public class ViolationRequestDto {
     private String description;
 
     @PositiveOrZero(message = "Fine amount must be zero or positive.")
-    private double finAmount;
+    @NotNull(message = "Fine amount is required for creation.", groups = CreateValidationGroup.class)
+    private Double finAmount;
 
     @PastOrPresent(message = "Date must be in the past or present.")
     private Date date;
 
-    @NotNull(message = "Payment status is required.")
-    private Boolean isPaid;
+    private boolean isPaid;
 
-    @NotNull(message = "Client ID is required.")
+    @NotNull(message = "Client ID is required for creation.", groups = CreateValidationGroup.class)
     private Long client;
 
     // @NotNull(message = "Charge ID is required.")
