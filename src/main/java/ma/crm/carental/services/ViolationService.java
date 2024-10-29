@@ -97,14 +97,14 @@ public class ViolationService {
 
 
 
-    public ViolationResponseDto findClient(long id) {
+    public ViolationResponseDto findViolation(long id) {
 
         
         try {
             Violation violation = violationRepo.find(id) ;
 
             /**
-             * @convert the client object to List of Client to use the general mapper
+             * @convert the Violation object to List of Violation to use the general mapper
              */
             List<Violation> violations = List.of(violation) ;
 
