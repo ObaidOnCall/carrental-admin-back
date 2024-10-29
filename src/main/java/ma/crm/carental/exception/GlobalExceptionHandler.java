@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -55,7 +56,7 @@ public class GlobalExceptionHandler {
 
     
 
-
+    /**@apiNote you must remove the handling of this Execption and remove this exception {@link ValidationException} */
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(ValidationException ex) {
         Map<String, Object> response = new HashMap<>();
@@ -77,12 +78,39 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // @ExceptionHandler(Exception.class)
-    // public ResponseEntity<Map<String, Object>> handelExption(Exception ex) {
-    //     log.error("UnableToProccessIteamException: {}", ex.getMessage());
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("status", false);
-    //     response.put("message", "hello");
-    //     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    // }
+
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", false);
+        response.put("message", "Validation failed");
+
+        // Format the list of validation errors
+        List<Map<String, String>> validationErrors = ex.getConstraintViolations().stream()
+            .map(violation -> {
+                Map<String, String> errorMap = new HashMap<>();
+
+                errorMap.put("field", extractSimpleFieldName(violation.getPropertyPath().toString()));
+                errorMap.put("message", violation.getMessage());
+                return errorMap;
+            })
+            .collect(Collectors.toList());
+
+        response.put("errors", validationErrors);
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+
+
+
+
+
+    /**private methods */
+
+    private String extractSimpleFieldName(String propertyPath) {
+        String[] parts = propertyPath.split("\\.");
+        return parts[parts.length - 1];
+    }
 }
