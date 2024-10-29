@@ -24,7 +24,7 @@ public class ViolationResponseDto {
 
     private Boolean isPaid ;
 
-    private long client ;
+    private ClientResponseDto client ;
 
     // @JoinColumn(name = "charge_id" , nullable = false)
     // @ManyToOne(fetch = FetchType.LAZY)

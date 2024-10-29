@@ -22,11 +22,10 @@ public interface VehiculeRepo extends JpaRepository<Vehicule , Long>{
     Page<VehResponseDto> findByTenantId(String tenantId ,Pageable pageable) ;
 
     @Modifying
-    @Query(value = "UPDATE vehicules v SET v.matricule = COALESCE(:matricule, v.matricule),"+
-                    "v.model_id = COALESCE(:model, v.model_id), "+
-                    "v.price = COALESCE(:price, v.price) , " +
-                    "v.metadata = COALESCE(:metadata, v.metadata) "+
-                    "WHERE v.id IN :ids AND v.tenant_id =:tenant_id" , nativeQuery = true) 
+    @Query(value = "UPDATE vehicules SET matricule = COALESCE(:matricule, matricule),"+
+                    "model_id = COALESCE(:model, model_id), "+
+                    "price = COALESCE(:price, price) " +
+                    "WHERE id IN :ids AND tenant_id =:tenant_id" , nativeQuery = true) 
     int updateVehiculesInBatch(
         @Param("ids") List<Long> ids ,
         @Param("tenant_id") String tenant ,

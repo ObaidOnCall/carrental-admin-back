@@ -6,8 +6,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import ma.crm.carental.annotations.ValidateRequest;
+import ma.crm.carental.annotations.ReactiveValidation;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
+import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.UpdateValidationGroup;
 import ma.crm.carental.services.ClientService;
 
 
 @RestController
 @RequestMapping("/clients")
+@Validated
 public class ClientController {
     
     private final ClientService clientService ;
@@ -38,15 +43,14 @@ public class ClientController {
 
     
     /**
-     * {@link ma.crm.carental.annotations.ValidateRequest} it validate request and generate 
+     * {@link ma.crm.carental.annotations.ReactiveValidation} it validate request and generate 
      * {@link ma.crm.carental.exception.ValidationException} if there is any invaild data
     * @see validate and generate the ValidationException with errors .
     */
     @PostMapping
-    @ValidateRequest 
+    @Validated(CreateValidationGroup.class)
     List<ClientResponseDto> save(
-        @Valid @RequestBody List<ClientRequestDto> clientRequestDtos ,
-        BindingResult bindingResult
+        @RequestBody @Valid List<ClientRequestDto> clientRequestDtos
     ) {
 
         /**
@@ -67,10 +71,10 @@ public class ClientController {
      *{@link ma.crm.carental.web.ClientController.save}
      */
     @PutMapping("/{ids}")
-    @ValidateRequest
+    @Validated(UpdateValidationGroup.class)
     Map<String , Object> update(
         @PathVariable List<Long> ids ,
-        @RequestBody ClientRequestDto clientRequestDto ,
+        @RequestBody @Valid ClientRequestDto clientRequestDto ,
         BindingResult bindingResult
     ){
 
