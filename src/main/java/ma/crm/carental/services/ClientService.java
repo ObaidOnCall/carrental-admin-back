@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
@@ -14,12 +16,16 @@ import org.springframework.validation.Validator;
 import jakarta.persistence.NoResultException;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
+import ma.crm.carental.dtos.violation.ViolationResponseDto;
 import ma.crm.carental.entities.Client;
 import ma.crm.carental.exception.UnableToProccessIteamException;
 import ma.crm.carental.mappers.ClientMapper;
 import ma.crm.carental.repositories.ClientRepo;
-import ma.crm.carental.tenantfilter.TenantContext;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @Transactional
@@ -82,12 +88,17 @@ public class ClientService {
 
 
 
-    public List<ClientResponseDto> pagenateClients(int page, int pageSize) {
+    public Page<ClientResponseDto> pagenateClients(Pageable pageable) {
+        
+        Long totalElements = clientRepo.count() ;
 
 
-        List<Client> clients = clientRepo.clientsWithPagination(page, pageSize) ;
+        List<ClientResponseDto> clientResponseDtos = clientMapper.fromClient(
+            clientRepo.clientsWithPagination(pageable.getPageNumber(), pageable.getPageSize())
+        ) ;
 
-        return clientMapper.fromClient(clients) ;
+        return new PageImpl<>(clientResponseDtos , pageable , totalElements) ;
+
 
     }
 

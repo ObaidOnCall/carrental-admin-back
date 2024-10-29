@@ -16,5 +16,7 @@ public interface ClientRepoInterface {
     List<Client> clientsWithPagination(int page, int pageSize) ;
 
     Client find(long id) ;
+
+    Long count() ;
     
 }
