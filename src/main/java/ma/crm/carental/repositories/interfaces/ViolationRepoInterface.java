@@ -3,9 +3,6 @@ package ma.crm.carental.repositories.interfaces;
 import java.util.List;
 
 import ma.crm.carental.entities.Violation;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 
 /**
