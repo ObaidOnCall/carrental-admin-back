@@ -2,6 +2,7 @@ package ma.crm.carental.entities;
 
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -68,8 +69,8 @@ public class DeliveryGuy extends AbstractBaseEntity{
 
     private String email ;
 
-    private ZonedDateTime cinIsValideUntil ;
+    private Date cinIsValideUntil ;
     
-    private ZonedDateTime licenceIsValideUntil ;
+    private Date licenceIsValideUntil ;
     
 }
