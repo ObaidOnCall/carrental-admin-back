@@ -3,12 +3,15 @@ package ma.crm.carental.repositories;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import ma.crm.carental.entities.Contract;
 import ma.crm.carental.repositories.interfaces.ContractInterface;
 
+
+@Repository
 public class ContractRepo implements ContractInterface{
 
 
@@ -41,7 +44,7 @@ public class ContractRepo implements ContractInterface{
     }
 
     @Override
-    public int deleteDeliveryGuys(List<Long> contractIds) {
+    public int deleteContracts(List<Long> contractIds) {
 
         if (contractIds == null || contractIds.isEmpty()) {
             return 0; // No records to delete
