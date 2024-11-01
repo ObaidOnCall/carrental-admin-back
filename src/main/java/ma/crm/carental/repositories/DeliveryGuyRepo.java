@@ -18,6 +18,7 @@ import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import ma.crm.carental.entities.DeliveryGuy;
 import ma.crm.carental.repositories.interfaces.DeliveryGuyInterface;
+import ma.crm.carental.utils.DBUtiles;
 
 
 @Slf4j
@@ -70,7 +71,7 @@ public class DeliveryGuyRepo implements DeliveryGuyInterface{
 
         int totalUpdatedRecords = 0;
 
-        Map<String, Object> fieldsToUpdate = convertToMap(deliveryGuy);
+        Map<String, Object> fieldsToUpdate = DBUtiles.convertToMap(deliveryGuy);
 
         //@ Check if there are any fields to update before entering the loop
         if (fieldsToUpdate.isEmpty()) {
@@ -168,29 +169,6 @@ public class DeliveryGuyRepo implements DeliveryGuyInterface{
         return query.getSingleResult() ;
     }
 
-
-    private Map<String, Object> convertToMap(DeliveryGuy deliveryGuy) {
-        Map<String, Object> map = new HashMap<>();
-    
-        // Get declared fields and filter out Hibernate internal fields
-        Arrays.stream(DeliveryGuy.class.getDeclaredFields())
-            .filter(field -> !field.getName().startsWith("$$_"))  // Exclude Hibernate internal fields
-            .forEach(field -> {
-                field.setAccessible(true);
-                try {
-                    Object value = field.get(deliveryGuy);
-                    // Add to map only if the value is not null or 0 (for numeric types)
-                    if (value != null && !(value instanceof Number && ((Number) value).intValue() == 0)) {
-                        map.put(field.getName(), value);
-                    }
-                } catch (IllegalAccessException e) {
-                    // Handle exception or log
-                    e.printStackTrace();
-                }
-            });
-    
-        return map;
-    }
     
 
     
