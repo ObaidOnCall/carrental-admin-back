@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class DBUtiles {
     
+    private DBUtiles () {}
 
 
 
