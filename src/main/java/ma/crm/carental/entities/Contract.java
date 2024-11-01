@@ -79,10 +79,10 @@ public class Contract extends AbstractBaseEntity{
     @Column(nullable = false)
     private Double remainingPrice ;
 
-    @Column(nullable = false)
+    @Column
     private Date dateValideCin ;
 
-    @Column(nullable = false)
+    @Column
     private Date dateValideDrivingLicence ;
 
     private Double deliveryCosts ;
@@ -90,8 +90,9 @@ public class Contract extends AbstractBaseEntity{
     @Column(nullable = false)
     private String createdBy ;
 
+    // @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
     private Vehicule vehicule;
 
     @OneToMany(mappedBy = "contract")
@@ -100,12 +101,14 @@ public class Contract extends AbstractBaseEntity{
     @OneToMany(mappedBy = "contract")
     private List<Charge> charges ;
 
+    // @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "client_id" , nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
     private Client client ;
 
+    // @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "deliveryGuy_id" , nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
     private DeliveryGuy deliveryGuy ;
 
     @CreationTimestamp
