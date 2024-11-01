@@ -128,8 +128,8 @@ public class VehiculeController {
          * @see access to the security context holder
          */
 
-         Authentication authentication_ = SecurityContextHolder.getContext().getAuthentication() ;
-         Jwt jwt = (Jwt) authentication.getPrincipal() ;
+        Authentication authentication_ = SecurityContextHolder.getContext().getAuthentication() ;
+        Jwt jwt = (Jwt) authentication.getPrincipal() ;
 
     }
 }

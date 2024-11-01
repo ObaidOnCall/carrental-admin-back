@@ -3,6 +3,9 @@ package ma.crm.carental.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import ma.crm.carental.dtos.client.ClientResponseDto;
@@ -16,6 +19,7 @@ import ma.crm.carental.entities.Client;
 import ma.crm.carental.entities.Contract;
 import ma.crm.carental.entities.DeliveryGuy;
 import ma.crm.carental.entities.Vehicule;
+import ma.crm.carental.utils.AuthUtiles;
 
 
 @Component
@@ -23,7 +27,6 @@ public class ContractMapper {
 
 
     public List<Contract> toContract(List<ContractRequestDto> contractRequestDtos) {
-
 
         return contractRequestDtos.stream()
                                 .map(contractRequestDto ->
@@ -56,6 +59,7 @@ public class ContractMapper {
                                             .placeOfDelivery(contractRequestDto.getPlaceOfDelivery())
                                             .placeOfReturn(contractRequestDto.getPlaceOfReturn())
                                             .dateValideDrivingLicence(contractRequestDto.getDateValideDrivingLicence())
+                                            .createdBy(AuthUtiles.getUsername())
                                             
                                             .build() 
                 ).collect(Collectors.toList()) ;
@@ -70,17 +74,16 @@ public class ContractMapper {
                                     .id(contract.getId())
                                     .vehicule(
                                         VehResponseDto.builder()
-                                        .id(null)
+                                        .id(contract.getVehicule().getId())
                                         .matricule(contract.getVehicule().getMatricule())
-                                        .model(
-                                            ModelResponseDto.builder()
-
-                                            .id(contract.getVehicule().getModel().getId())
-                                            .name(contract.getVehicule().getModel().getName())
-                                            .topSpeed(contract.getVehicule().getModel().getTopSpeed())
-                                            .numberOfDoors(contract.getVehicule().getModel().getNumberOfDoors())
-                                            .build()
-                                        )
+                                        // .model(
+                                        //     ModelResponseDto.builder()
+                                        //     .id(contract.getVehicule().getModel().getId())
+                                        //     .name(contract.getVehicule().getModel().getName())
+                                        //     .topSpeed(contract.getVehicule().getModel().getTopSpeed())
+                                        //     .numberOfDoors(contract.getVehicule().getModel().getNumberOfDoors())
+                                        //     .build()
+                                        // )
                                         .build()
                                     )
                                     .client(
