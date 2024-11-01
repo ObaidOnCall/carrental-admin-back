@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -70,12 +72,17 @@ public class DeliveryGuyRepo implements DeliveryGuyInterface{
 
         Map<String, Object> fieldsToUpdate = convertToMap(deliveryGuy);
 
-        // Check if there are any fields to update before entering the loop
+        //@ Check if there are any fields to update before entering the loop
         if (fieldsToUpdate.isEmpty()) {
             throw new IllegalArgumentException("No fields to update");
         }
 
-        // Build the JPQL query dynamically based on non-null fields
+        //@ Validate field names to prevent injection and errors
+        Set<String> validFieldNames = Arrays.stream(DeliveryGuy.class.getDeclaredFields())
+            .map(Field::getName)
+            .collect(Collectors.toSet());
+
+        //? Build the JPQL query dynamically based on non-null fields
         StringBuilder jpql = new StringBuilder("UPDATE DeliveryGuy d SET ");
         Map<String, Object> params = new HashMap<>();
 
@@ -83,33 +90,39 @@ public class DeliveryGuyRepo implements DeliveryGuyInterface{
             String fieldName = entry.getKey();
             Object value = entry.getValue();
             
-            if (value != null) {
+            if (validFieldNames.contains(fieldName) && value != null) {
                 jpql.append("d.").append(fieldName).append(" = :").append(fieldName).append(", ");
                 params.put(fieldName, value);
             }
         }
         
-        // Remove the trailing comma from the query string
+        //? Remove the trailing comma from the query string
         jpql.setLength(jpql.length() - 2);  // Remove last comma
         jpql.append(" WHERE d.id IN :clientIds");
 
 
-        /**@apiNote plz update {@link ClientRepo.updateClientsInBatch} */
+        //? Create the query with the base JPQL
+        var query = em.createQuery(jpql.toString());
+    
+        //$ Set parameters for non-null fields
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            query.setParameter(param.getKey(), param.getValue());
+        }
+        
+        
+        
+        /**
+         * $ @apiNote plz update { ClientRepo.updateClientsInBatch} 
+         * 
+         * */
 
         for (int i = 0; i < deliveryGuyIds.size(); i += batchSize) {
             List<Long> batch = deliveryGuyIds.subList(i, Math.min(i + batchSize, deliveryGuyIds.size()));
     
-            // Create the query with the base JPQL
-            var query = em.createQuery(jpql.toString());
-    
-            // Set parameters for non-null fields
-            for (Map.Entry<String, Object> param : params.entrySet()) {
-                query.setParameter(param.getKey(), param.getValue());
-            }
             
             // Set the client IDs for the current batch
             query.setParameter("clientIds", batch);
-            
+
             // Execute the update
             int updatedRecords = query.executeUpdate();
             totalUpdatedRecords += updatedRecords;
