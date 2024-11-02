@@ -7,11 +7,12 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
 import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
 
 
 @Data
-public class ViolationRequestDto {
+public class ViolationRequestDto implements ClientIdentifiable{
     
     @Size(max = 255, message = "Description can be up to 255 characters.")
     private String description;

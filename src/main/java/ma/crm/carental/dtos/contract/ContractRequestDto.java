@@ -7,13 +7,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
 import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
-import ma.crm.carental.entities.Client;
-import ma.crm.carental.entities.DeliveryGuy;
-import ma.crm.carental.entities.Vehicule;
+
 
 @Data
-public class ContractRequestDto {
+public class ContractRequestDto implements ClientIdentifiable{
     
 
     @NotNull(message = "Contract number is required", groups = CreateValidationGroup.class)
@@ -65,11 +64,11 @@ public class ContractRequestDto {
     // private String createdBy;
 
     @NotNull(message = "Vehicule is required", groups = CreateValidationGroup.class)
-    private long vehicule;
+    private Long vehicule;
 
     @NotNull(message = "Client is required", groups = CreateValidationGroup.class)
-    private long client;
+    private Long client;
 
     @NotNull(message = "Delivery guy is required", groups = CreateValidationGroup.class)
-    private long deliveryGuy;
+    private Long deliveryGuy;
 }
