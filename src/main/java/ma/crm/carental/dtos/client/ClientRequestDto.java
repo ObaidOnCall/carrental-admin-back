@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
-import ma.crm.carental.dtos.interfaces.UpdateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 
 @Data
 public class ClientRequestDto{

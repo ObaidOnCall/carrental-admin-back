@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import ma.crm.carental.annotations.ReactiveValidation;
-import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.violation.ViolationRequestDto;
 import ma.crm.carental.dtos.violation.ViolationResponseDto;
 import ma.crm.carental.services.ViolationService;

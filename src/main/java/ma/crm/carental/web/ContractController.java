@@ -17,7 +17,7 @@ import ma.crm.carental.dtos.contract.ContractRequestDto;
 import ma.crm.carental.dtos.contract.ContractResponseDto;
 import ma.crm.carental.dtos.deliveryguy.DeliveryGuyRequestDto;
 import ma.crm.carental.dtos.deliveryguy.DeliveryGuyResponseDto;
-import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.services.ContractService;
 
 @RestController

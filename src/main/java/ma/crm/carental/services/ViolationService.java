@@ -69,7 +69,7 @@ public class ViolationService {
         
     }
 
-
+    @ValidateClients
     public Map<String , Object> updateViolations(List<Long> violationIds , List<ViolationRequestDto> violationRequestDtos) {
 
         Map<String , Object> serviceMessage = new HashMap<>() ;

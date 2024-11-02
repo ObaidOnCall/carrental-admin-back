@@ -24,8 +24,8 @@ import jakarta.validation.Valid;
 import ma.crm.carental.annotations.ReactiveValidation;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
-import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
-import ma.crm.carental.dtos.interfaces.UpdateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 import ma.crm.carental.services.ClientService;
 
 

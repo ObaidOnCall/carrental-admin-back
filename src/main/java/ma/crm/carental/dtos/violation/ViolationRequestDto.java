@@ -8,7 +8,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
-import ma.crm.carental.dtos.interfaces.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 
 
 @Data
