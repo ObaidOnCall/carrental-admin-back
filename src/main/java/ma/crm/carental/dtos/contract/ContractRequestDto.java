@@ -8,11 +8,14 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
+import ma.crm.carental.dtos.interfaces.DeliveryGuyIdentifiable;
+import ma.crm.carental.dtos.interfaces.VehiclueIdentifiable;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
+import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 
 
 @Data
-public class ContractRequestDto implements ClientIdentifiable{
+public class ContractRequestDto implements ClientIdentifiable , VehiclueIdentifiable , DeliveryGuyIdentifiable{
     
 
     @NotNull(message = "Contract number is required", groups = CreateValidationGroup.class)
@@ -39,19 +42,19 @@ public class ContractRequestDto implements ClientIdentifiable{
     @Positive(message = "Price must be positive", groups = CreateValidationGroup.class)
     private double price;
 
-    @Positive(message = "Start mileage must be positive", groups = CreateValidationGroup.class)
+    @Positive(message = "Start mileage must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private long startMileage;
 
-    @PositiveOrZero(message = "Caution cannot be negative", groups = CreateValidationGroup.class)
+    @PositiveOrZero(message = "Caution cannot be negative", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private int caution;
 
-    @Positive(message = "Total amount must be positive", groups = CreateValidationGroup.class)
+    @Positive(message = "Total amount must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private double totalAmount;
 
-    @PositiveOrZero(message = "Pre-given price cannot be negative", groups = CreateValidationGroup.class)
+    @PositiveOrZero(message = "Pre-given price cannot be negative", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private double preGivenPrice;
 
-    @PositiveOrZero(message = "Remaining price cannot be negative")
+    @PositiveOrZero(message = "Remaining price cannot be negative" , groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private Double remainingPrice;
 
     private Date dateValideCin;
