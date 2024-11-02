@@ -15,6 +15,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
+import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
+import ma.crm.carental.dtos.interfaces.VehiclueIdentifiable;
 import ma.crm.carental.dtos.vehicule.AssuranceRequestDto;
 import ma.crm.carental.dtos.vehicule.ModelRequestDto;
 import ma.crm.carental.dtos.vehicule.ModelDtoInterface;
@@ -30,6 +32,7 @@ public class VehiculeChecker {
 
 
 	private static final String ERRORMESSAGE = "access denied or unable to process the item ,please use a valid data" ;
+	private static final String ERRORMESSAGEVEHICLUE = "access denied or unable to process the item within the vehicule" ;
 
 	@PersistenceContext
     private EntityManager entityManager;
@@ -113,6 +116,38 @@ public class VehiculeChecker {
 	}
 
 
+	@Before("@annotation(ma.crm.carental.annotations.ValidateVehicules)")
+	public void validateVehicles(JoinPoint joinPoint) throws UnableToProccessIteamException{
+		Object[] args = joinPoint.getArgs();
+
+		for (Object arg : args) {
+			
+			if (arg instanceof List<?>) {
+
+				List<?> list = (List<?>) arg;
+
+				if (!list.isEmpty() && list.get(0) instanceof VehiclueIdentifiable) {
+					
+					@SuppressWarnings("unchecked")
+                List<VehiclueIdentifiable> identifiableList = (List<VehiclueIdentifiable>) list;
+
+					List<Long> clients = identifiableList.stream()
+							.map(VehiclueIdentifiable::getVehicule)
+							.filter(Objects::nonNull)
+							.distinct()  // Remove duplicates
+							.collect(Collectors.toList());
+
+					if (!clients.isEmpty()) {
+						validateVehicles(clients);
+					}
+					return;
+				}
+				
+			}
+		}
+		
+	}
+
 
 
 
@@ -152,4 +187,21 @@ public class VehiculeChecker {
 		}
 	}
 
+
+	private void validateVehicles(List<Long> vehicules) throws UnableToProccessIteamException {
+
+		Set<Long> uniquevehicules = new HashSet<>(vehicules);
+
+		String hql = "SELECT COUNT(v.id) FROM Vehicule v WHERE v.id IN :vehicluesIds";
+		
+		Query query = entityManager.createQuery(hql);
+		query.setParameter("vehicluesIds", uniquevehicules);
+		long number = (long) query.getSingleResult();
+		
+		entityManager.clear();
+		
+		if (number != uniquevehicules.size()) {
+			throw new UnableToProccessIteamException(VehiculeChecker.ERRORMESSAGEVEHICLUE);
+		}
+	}
 }
