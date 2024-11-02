@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import ma.crm.carental.annotations.ValidateClients;
+import ma.crm.carental.annotations.ValidateDeliveryGuys;
+import ma.crm.carental.annotations.ValidateVehicules;
 import ma.crm.carental.dtos.contract.ContractRequestDto;
 import ma.crm.carental.dtos.contract.ContractResponseDto;
 import ma.crm.carental.dtos.deliveryguy.DeliveryGuyRequestDto;
@@ -36,7 +38,9 @@ public class ContractService {
         this.contractMapper = contractMapper ;
     }
     
-    @ValidateClients
+    @ValidateClients 
+    @ValidateVehicules
+    @ValidateDeliveryGuys
     public List<ContractResponseDto> saveContracts(List<ContractRequestDto> contractRequestDtos){
 
         return contractMapper.fromContract(
