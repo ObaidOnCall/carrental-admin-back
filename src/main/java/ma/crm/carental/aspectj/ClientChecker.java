@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
+import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
 import ma.crm.carental.dtos.vehicule.VehRequsetDto;
 import ma.crm.carental.dtos.violation.ViolationRequestDto;
 import ma.crm.carental.exception.UnableToProccessIteamException;
@@ -41,13 +42,13 @@ public class ClientChecker {
 
 				List<?> list = (List<?>) arg;
 
-				if (!list.isEmpty() && list.get(0) instanceof ViolationRequestDto) {
+				if (!list.isEmpty() && list.get(0) instanceof ClientIdentifiable) {
 					
 					@SuppressWarnings("unchecked")
-					List<ViolationRequestDto> violationRequestDtos = (List<ViolationRequestDto>) list;
+                List<ClientIdentifiable> identifiableList = (List<ClientIdentifiable>) list;
 
-					List<Long> clients = violationRequestDtos.stream()
-							.map(ViolationRequestDto::getClient)
+					List<Long> clients = identifiableList.stream()
+							.map(ClientIdentifiable::getClient)
 							.filter(Objects::nonNull)
 							.distinct()  // Remove duplicates
 							.collect(Collectors.toList());
