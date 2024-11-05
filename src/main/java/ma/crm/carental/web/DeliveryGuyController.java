@@ -70,7 +70,7 @@ public class DeliveryGuyController {
 
         List<DeliveryGuyRequestDto> deliveryGuyRequestDtos = new ArrayList<>();
         deliveryGuyRequestDtos.add(deliveryGuyRequestDto);
-        return deliveryGuyService.updateClients(ids, deliveryGuyRequestDtos) ;
+        return deliveryGuyService.updateDeliveryGuys(ids, deliveryGuyRequestDtos) ;
     }
 
     @GetMapping

@@ -1,10 +1,8 @@
 package ma.crm.carental.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
 
 import jakarta.persistence.NoResultException;
 import ma.crm.carental.dtos.deliveryguy.DeliveryGuyRequestDto;
@@ -66,12 +63,12 @@ public class DeliveryGuyService {
     }
 
 
-    public Map<String , Object> updateClients(List<Long> clientsIds , List<DeliveryGuyRequestDto> deliveryGuyRequestDtos) {
+    public Map<String , Object> updateDeliveryGuys(List<Long> deliveryGuysIds , List<DeliveryGuyRequestDto> deliveryGuyRequestDtos) {
 
         Map<String , Object> serviceMessage = new HashMap<>() ;
 
 
-        int count = deliveryGuyRepo.updateDeliveryGuysInBatch(clientsIds, deliveryGuyMapper.toDeliveryGuy(deliveryGuyRequestDtos).get(0)) ;
+        int count = deliveryGuyRepo.updateDeliveryGuysInBatch(deliveryGuysIds, deliveryGuyMapper.toDeliveryGuy(deliveryGuyRequestDtos).get(0)) ;
 
         serviceMessage.put("status", true) ;
         serviceMessage.put("message", "Number Of Updated Riders is :" + count) ;
