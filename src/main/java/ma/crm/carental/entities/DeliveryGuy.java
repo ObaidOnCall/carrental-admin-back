@@ -5,6 +5,9 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -72,5 +75,9 @@ public class DeliveryGuy extends AbstractBaseEntity{
     private Date cinIsValideUntil ;
     
     private Date licenceIsValideUntil ;
+
+    @OneToMany(mappedBy = "deliveryGuy" , fetch = FetchType.LAZY , cascade = CascadeType.REFRESH)
+    @JsonIgnore
+    private List<Contract> contracts ;
     
 }

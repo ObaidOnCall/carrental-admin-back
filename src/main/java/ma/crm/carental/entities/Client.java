@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -82,7 +83,7 @@ public class Client extends AbstractBaseEntity{
     @OneToMany(mappedBy = "client")
     private List<Violation> violations ;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client" , cascade = CascadeType.REFRESH)
     private List<Contract> contracts ;
 
     
