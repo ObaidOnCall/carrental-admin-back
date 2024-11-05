@@ -73,7 +73,7 @@ public class ChargeRepo implements ChargeInterface{
     
             
             // Set the client IDs for the current batch
-            query.setParameter("chargeIds", batch);
+            query.setParameter("Ids", batch);
 
             // Execute the update
             int updatedRecords = query.executeUpdate();

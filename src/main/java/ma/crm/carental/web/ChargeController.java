@@ -19,74 +19,77 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import ma.crm.carental.dtos.charge.ChargeRequestDto;
+import ma.crm.carental.dtos.charge.ChargeResponseDto;
 import ma.crm.carental.dtos.contract.ContractRequestDto;
 import ma.crm.carental.dtos.contract.ContractResponseDto;
 import ma.crm.carental.dtos.deliveryguy.DeliveryGuyRequestDto;
 import ma.crm.carental.dtos.deliveryguy.DeliveryGuyResponseDto;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
+import ma.crm.carental.services.ChargeService;
 import ma.crm.carental.services.ContractService;
 
 @RestController
-@RequestMapping("/contracts")
+@RequestMapping("/charges")
 @Validated
-public class ContractController {
+public class ChargeController {
 
-    private final ContractService contractService ;
+    private final  ChargeService chargeService ;
 
 
     @Autowired
-    ContractController(
-        ContractService contractService
+    ChargeController(
+        ChargeService chargeService
     ) {
-        this.contractService = contractService ;
+        this.chargeService = chargeService ;
     }
 
     @PostMapping
     @Validated(CreateValidationGroup.class)
-    List<ContractResponseDto> save(
-        @RequestBody @Valid List<ContractRequestDto> contractRequestDtos
+    List<ChargeResponseDto> save(
+        @RequestBody @Valid List<ChargeRequestDto> chargeRequestDtos
     ) {
 
         /**
          * @see validate and generate the ValidationException with errors .
          */
-        return contractService.saveContracts(contractRequestDtos) ;
+        return chargeService.saveCharges(chargeRequestDtos) ;
     }
     
     @DeleteMapping("/{ids}")
     Map<String , Object> delete(
         @PathVariable List<Long> ids
     ){
-        return contractService.deleteContracts(ids) ;
+        return chargeService.deleteCharges(ids) ;
     }
 
     @PutMapping("/{ids}")
     @Validated(UpdateValidationGroup.class)
     Map<String , Object> update(
         @PathVariable List<Long> ids ,
-        @RequestBody @Valid ContractRequestDto contractRequestDto 
+        @RequestBody @Valid ChargeRequestDto chargeRequestDto 
     ){
 
-        List<ContractRequestDto> contractRequestDtos = new ArrayList<>();
-        contractRequestDtos.add(contractRequestDto);
-        return contractService.updateContracts(ids, contractRequestDtos) ;
+        List<ChargeRequestDto> chargeRequestDtos = new ArrayList<>();
+        chargeRequestDtos.add(chargeRequestDto);
+        return chargeService.updateCharges(ids, chargeRequestDtos) ;
     }
 
-    @GetMapping
-    Page<ContractResponseDto> pagenate(
-        @RequestParam int page ,
-        @RequestParam int pageSize
-    ) {
+    // @GetMapping
+    // Page<ContractResponseDto> pagenate(
+    //     @RequestParam int page ,
+    //     @RequestParam int pageSize
+    // ) {
 
-        return contractService.pagenateContracts(PageRequest.of(page, pageSize)) ;
-    }
+    //     return contractService.pagenateContracts(PageRequest.of(page, pageSize)) ;
+    // }
 
 
-    @GetMapping("/{id}")
-    ContractResponseDto find(
-        @PathVariable long id 
-    ) {
-        return contractService.findContract(id) ;
-    }
+    // @GetMapping("/{id}")
+    // ContractResponseDto find(
+    //     @PathVariable long id 
+    // ) {
+    //     return contractService.findContract(id) ;
+    // }
 }

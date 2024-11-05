@@ -103,8 +103,18 @@ public class DBUtiles {
             AbstractBaseEntity entity ,
             EntityManager em 
         ) {
+        
 
-        StringBuilder jpql = new StringBuilder("UPDATE Contract c SET ");
+        // Get the entity class
+        Class<?> entityClass = entity.getClass();
+
+        // Retrieve the entity name dynamically
+        Entity entityAnnotation = entityClass.getAnnotation(Entity.class);
+        String entityName = (entityAnnotation != null && !entityAnnotation.name().isEmpty()) 
+                            ? entityAnnotation.name() 
+                            : entityClass.getSimpleName();
+
+        StringBuilder jpql = new StringBuilder("UPDATE " + entityName + " c SET ");
         Map<String, Object> params = new HashMap<>();
 
         for (Map.Entry<String, Object> entry : DBUtiles.convertToMap(entity).entrySet()) {
@@ -125,7 +135,7 @@ public class DBUtiles {
         }
 
         jpql.setLength(jpql.length() - 2);  // Remove last comma
-        jpql.append(" WHERE c.id IN :contractIds");
+        jpql.append(" WHERE c.id IN :Ids");
 
 
         log.info("JPQL {} : 📑" , jpql);

@@ -42,13 +42,13 @@ public class ContractRequestDto implements ClientIdentifiable , VehiclueIdentifi
     @Positive(message = "Price must be positive", groups = CreateValidationGroup.class)
     private double price;
 
-    @Positive(message = "Start mileage must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
+    @PositiveOrZero(message = "Start mileage must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private long startMileage;
 
     @PositiveOrZero(message = "Caution cannot be negative", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private int caution;
 
-    @Positive(message = "Total amount must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
+    @PositiveOrZero(message = "Total amount must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private double totalAmount;
 
     @PositiveOrZero(message = "Pre-given price cannot be negative", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })

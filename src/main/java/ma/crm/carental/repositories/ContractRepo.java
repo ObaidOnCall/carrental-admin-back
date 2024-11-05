@@ -92,7 +92,7 @@ public class ContractRepo implements ContractInterface{
     
             
             // Set the client IDs for the current batch
-            query.setParameter("contractIds", batch);
+            query.setParameter("Ids", batch);
 
             // Execute the update
             int updatedRecords = query.executeUpdate();
