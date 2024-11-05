@@ -82,7 +82,7 @@ public class Vehicule extends AbstractBaseEntity{
     @JsonIgnore
     private List<Assurance> assurances ;
 
-    @OneToMany(mappedBy = "vehicule" , fetch = FetchType.LAZY , cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "vehicule" , fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Contract> contracts ;
 

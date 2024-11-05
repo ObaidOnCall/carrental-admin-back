@@ -65,7 +65,9 @@ public class ContractService {
     }
 
 
-    
+    @ValidateClients
+    @ValidateDeliveryGuys
+    @ValidateVehicules
     public Map<String , Object> updateContracts(List<Long> contractsIds , List<ContractRequestDto> contractRequestDtos) {
 
         Map<String , Object> serviceMessage = new HashMap<>() ;

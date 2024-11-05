@@ -79,23 +79,8 @@ public class ContractRepo implements ContractInterface{
 
         int totalUpdatedRecords = 0;
 
-        /**
-         * @ get field value map from an object
-         */
-        Map<String, Object> fieldsToUpdate = DBUtiles.convertToMap(contract);
 
-        //@ Check if there are any fields to update before entering the loop
-        if (fieldsToUpdate.isEmpty()) {
-            throw new IllegalArgumentException("No fields to update");
-        }
-
-        //@ Validate field names to prevent injection and errors
-        Set<String> validFieldNames = DBUtiles.getValidateFieldNames(Contract.class.getDeclaredFields()) ;
-        
-
-        log.info("fildes to udate {} : 〽️" , fieldsToUpdate);
-
-        Query query = DBUtiles.buildJPQLQueryDynamicallyForUpdate(fieldsToUpdate, validFieldNames, em) ;
+        Query query = DBUtiles.buildJPQLQueryDynamicallyForUpdate(contract, em) ;
         
         
         
@@ -154,43 +139,6 @@ public class ContractRepo implements ContractInterface{
         
         return query.getSingleResult() ;
     }
-
     
-
-    private boolean isEntityWithNullId(Object obj) {
-        // if (obj == null) return true;
-    
-        try {
-            // Check if the class is annotated as an entity (assuming a JPA Entity in jakarta package)
-            if (obj.getClass().isAnnotationPresent(Entity.class)) {
-                log.info("Object is not an entity: {}", obj.getClass().getName());
-                
-
-                Field idField = obj.getClass().getDeclaredField("id");
-                idField.setAccessible(true);
-                
-                Object idValue = idField.get(obj);
-                
-                if (idValue != null) {
-                    return false;  // `id` field is non-null, so it's a valid entity with a valid ID
-                } else {
-                    log.info("Entity {} has a null id", obj.getClass().getName());
-                }
-                return true;
-            }
-    
-            // Check for `id` field and validate if it is non-null
-            
-            
-            
-            
-        } catch (NoSuchFieldException e) {
-            log.warn("No id field found in entity {}", obj.getClass().getName(), e);
-        } catch (IllegalAccessException e) {
-            log.warn("Unable to access id field for entity {}", obj.getClass().getName(), e);
-        }
-    
-        return false; // Either `id` is null or entity check failed
-    }    
 
 }

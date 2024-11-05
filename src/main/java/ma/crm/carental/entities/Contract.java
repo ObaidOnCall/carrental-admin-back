@@ -92,29 +92,28 @@ public class Contract extends AbstractBaseEntity{
     @Column(nullable = false)
     private String createdBy ;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    @Cascade(CascadeType.ALL)
-    private Vehicule vehicule;
-
     @OneToMany(mappedBy = "contract")
     private List<Billing> billings;
-
+    
     @OneToMany(mappedBy = "contract")
     private List<Charge> charges ;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
+    
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Vehicule vehicule;
+    
     @ManyToOne
     @JoinColumn(name = "client_id" , nullable = false)
-    @Cascade(CascadeType.ALL)
     private Client client ;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
+
     @ManyToOne
     @JoinColumn(name = "deliveryGuy_id" , nullable = false)
-    @Cascade(CascadeType.ALL)
     private DeliveryGuy deliveryGuy ;
+
+
+
+    
 
     @CreationTimestamp
     private Date createdAt ;

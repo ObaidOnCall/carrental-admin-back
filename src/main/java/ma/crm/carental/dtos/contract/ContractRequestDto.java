@@ -63,8 +63,6 @@ public class ContractRequestDto implements ClientIdentifiable , VehiclueIdentifi
     @PositiveOrZero(message = "Delivery costs cannot be negative")
     private Double deliveryCosts;
 
-    // @NotBlank(message = "Created by field is required", groups = CreateValidationGroup.class)
-    // private String createdBy;
 
     @NotNull(message = "Vehicule is required", groups = CreateValidationGroup.class)
     private Long vehicule;

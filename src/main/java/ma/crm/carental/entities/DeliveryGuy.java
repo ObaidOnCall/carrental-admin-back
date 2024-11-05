@@ -76,7 +76,7 @@ public class DeliveryGuy extends AbstractBaseEntity{
     
     private Date licenceIsValideUntil ;
 
-    @OneToMany(mappedBy = "deliveryGuy" , fetch = FetchType.LAZY , cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "deliveryGuy" , fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Contract> contracts ;
     
