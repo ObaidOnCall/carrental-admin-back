@@ -8,7 +8,7 @@ public interface ContractInterface {
 
     List<Contract> insertContractInBatch(List<Contract> contracts) ;
 
-    int deleteContracts(List<Long> deliveryGuyIds ) ;
+    int deleteContracts(List<Long> contractIds ) ;
 
     int updateContractsInBatch(List<Long> contractIds , Contract contract) ;
 
