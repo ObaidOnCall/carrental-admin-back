@@ -28,8 +28,6 @@ public class ContractService {
 
     private static final String ERRORMESSAGE = "Access denied or unable to process the item within the contracts. Contract ID: ";
 
-
-
     private final ContractRepo contractRepo ;
 
     private final ContractMapper contractMapper ;

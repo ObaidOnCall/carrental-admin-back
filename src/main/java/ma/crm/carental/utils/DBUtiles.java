@@ -1,9 +1,21 @@
 package ma.crm.carental.utils;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import lombok.extern.slf4j.Slf4j;
+import ma.crm.carental.entities.Contract;
+
+@Slf4j
 public class DBUtiles {
     
     private DBUtiles () {}
@@ -31,5 +43,97 @@ public class DBUtiles {
             });
     
         return map;
+    }
+
+
+
+    public static boolean isEntityWithNullId(Object obj) {
+    
+        try {
+            // Check if the class is annotated as an entity (assuming a JPA Entity in jakarta package)
+            if (obj.getClass().isAnnotationPresent(Entity.class)) {
+                log.info("Object is not an entity: {}", obj.getClass().getName());
+                
+
+                Field idField = obj.getClass().getDeclaredField("id");
+                idField.setAccessible(true);
+                
+                Object idValue = idField.get(obj);
+                
+                if (idValue != null) {
+                    return false;  // `id` field is non-null, so it's a valid entity with a valid ID
+                } else {
+                    log.info("Entity {} has a null id", obj.getClass().getName());
+                }
+                return true;
+            }
+    
+            // Check for `id` field and validate if it is non-null
+            
+            
+            
+            
+        } catch (NoSuchFieldException e) {
+            log.warn("No id field found in entity {}", obj.getClass().getName(), e);
+        } catch (IllegalAccessException e) {
+            log.warn("Unable to access id field for entity {}", obj.getClass().getName(), e);
+        }
+    
+        return false; // Either `id` is null or entity check failed
+    }
+
+
+    
+    public static Set<String> getValidateFieldNames(Field[] fields) {
+        
+        // @ Validate field names to prevent injection and errors
+        return Arrays.stream(fields)
+            .map(Field::getName)
+            .collect(Collectors.toSet());
+    }
+
+    // Build the JPQL query dynamically based on non-null fields
+    public static Query buildJPQLQueryDynamicallyForUpdate(
+            Map<String, Object> fieldsToUpdate ,
+            Set<String> validFieldNames ,
+            EntityManager em 
+        ) {
+
+        StringBuilder jpql = new StringBuilder("UPDATE Contract c SET ");
+        Map<String, Object> params = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : fieldsToUpdate.entrySet()) {
+            
+            String fieldName = entry.getKey();
+            Object value = entry.getValue();
+            
+            // Check if the field is a valid field and if the value is not null
+            if (validFieldNames.contains(fieldName) && value != null) {
+                
+                if (DBUtiles.isEntityWithNullId(value)) {
+                    continue;
+                }
+                
+                jpql.append("c.").append(fieldName).append(" = :").append(fieldName).append(", ");
+                params.put(fieldName, value);
+            }
+        }
+
+        jpql.setLength(jpql.length() - 2);  // Remove last comma
+        jpql.append(" WHERE c.id IN :contractIds");
+
+
+        log.info("JPQL {} : 📑" , jpql);
+
+
+        //? Create the query with the base JPQL
+        Query query = em.createQuery(jpql.toString());
+    
+        //$ Set parameters for non-null fields
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            query.setParameter(param.getKey(), param.getValue());
+        }
+
+        return query ;
     }
 }
