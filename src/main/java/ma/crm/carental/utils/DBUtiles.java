@@ -13,7 +13,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
+import ma.crm.carental.entities.AbstractBaseEntity;
 import ma.crm.carental.entities.Contract;
+
 
 @Slf4j
 public class DBUtiles {
@@ -41,13 +43,17 @@ public class DBUtiles {
                     e.printStackTrace();
                 }
             });
+        
+        if (map.isEmpty()) {
+            throw new IllegalArgumentException("No fields to update");
+        }
     
         return map;
     }
 
 
 
-    public static boolean isEntityWithNullId(Object obj) {
+    private static boolean isEntityWithNullId(Object obj) {
     
         try {
             // Check if the class is annotated as an entity (assuming a JPA Entity in jakarta package)
@@ -84,7 +90,7 @@ public class DBUtiles {
 
 
     
-    public static Set<String> getValidateFieldNames(Field[] fields) {
+    private static Set<String> getValidateFieldNames(Field[] fields) {
         
         // @ Validate field names to prevent injection and errors
         return Arrays.stream(fields)
@@ -94,21 +100,20 @@ public class DBUtiles {
 
     // Build the JPQL query dynamically based on non-null fields
     public static Query buildJPQLQueryDynamicallyForUpdate(
-            Map<String, Object> fieldsToUpdate ,
-            Set<String> validFieldNames ,
+            AbstractBaseEntity entity ,
             EntityManager em 
         ) {
 
         StringBuilder jpql = new StringBuilder("UPDATE Contract c SET ");
         Map<String, Object> params = new HashMap<>();
 
-        for (Map.Entry<String, Object> entry : fieldsToUpdate.entrySet()) {
+        for (Map.Entry<String, Object> entry : DBUtiles.convertToMap(entity).entrySet()) {
             
             String fieldName = entry.getKey();
             Object value = entry.getValue();
             
             // Check if the field is a valid field and if the value is not null
-            if (validFieldNames.contains(fieldName) && value != null) {
+            if (DBUtiles.getValidateFieldNames(entity.getClass().getDeclaredFields()).contains(fieldName) && value != null) {
                 
                 if (DBUtiles.isEntityWithNullId(value)) {
                     continue;
