@@ -10,7 +10,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import ma.crm.carental.entities.Charge;
-import ma.crm.carental.entities.Contract;
 import ma.crm.carental.repositories.interfaces.ChargeInterface;
 import ma.crm.carental.utils.DBUtiles;
 
@@ -113,7 +112,7 @@ public class ChargeRepo implements ChargeInterface{
 
     @Override
     public Long count() {
-        
+
         String jpql = "SELECT COUNT(c) FROM Contract c";
 
         TypedQuery<Long> query = em.createQuery(jpql, Long.class);

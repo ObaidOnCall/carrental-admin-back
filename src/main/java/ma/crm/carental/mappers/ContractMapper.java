@@ -24,7 +24,8 @@ public class ContractMapper {
 
 
     public List<Contract> toContract(List<ContractRequestDto> contractRequestDtos) {
-
+        
+        String createdBy = AuthUtiles.getUsername() ;
         return contractRequestDtos.stream()
                                 .map(contractRequestDto ->
                                             Contract.builder()
@@ -56,7 +57,7 @@ public class ContractMapper {
                                             .placeOfDelivery(contractRequestDto.getPlaceOfDelivery())
                                             .placeOfReturn(contractRequestDto.getPlaceOfReturn())
                                             .dateValideDrivingLicence(contractRequestDto.getDateValideDrivingLicence())
-                                            .createdBy(AuthUtiles.getUsername())
+                                            .createdBy(createdBy)
                                             
                                             .build() 
                 ).collect(Collectors.toList()) ;

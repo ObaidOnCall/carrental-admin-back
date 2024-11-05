@@ -57,6 +57,9 @@ public class Charge extends AbstractBaseEntity{
 
     private Boolean isPaid ;
 
+    @Column(nullable = false)
+    private String createdBy ;
+
     @JoinColumn(nullable=false , name = "contract_id")
     @ManyToOne
     private Contract contract ;
