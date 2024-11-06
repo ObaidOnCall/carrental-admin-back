@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
@@ -101,7 +102,7 @@ public class ChargeRepo implements ChargeInterface{
     }
 
     @Override
-    public Charge find(long id) {
+    public Charge find(long id) throws NoResultException{
 
         String hql = "FROM Charge c WHERE c.id = :id";
             

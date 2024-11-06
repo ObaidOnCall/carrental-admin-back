@@ -21,14 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import ma.crm.carental.dtos.charge.ChargeRequestDto;
 import ma.crm.carental.dtos.charge.ChargeResponseDto;
-import ma.crm.carental.dtos.contract.ContractRequestDto;
-import ma.crm.carental.dtos.contract.ContractResponseDto;
-import ma.crm.carental.dtos.deliveryguy.DeliveryGuyRequestDto;
-import ma.crm.carental.dtos.deliveryguy.DeliveryGuyResponseDto;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 import ma.crm.carental.services.ChargeService;
-import ma.crm.carental.services.ContractService;
+
+
 
 @RestController
 @RequestMapping("/charges")
@@ -76,20 +73,20 @@ public class ChargeController {
         return chargeService.updateCharges(ids, chargeRequestDtos) ;
     }
 
-    // @GetMapping
-    // Page<ContractResponseDto> pagenate(
-    //     @RequestParam int page ,
-    //     @RequestParam int pageSize
-    // ) {
+    @GetMapping
+    Page<ChargeResponseDto> pagenate(
+        @RequestParam int page ,
+        @RequestParam int pageSize
+    ) {
 
-    //     return contractService.pagenateContracts(PageRequest.of(page, pageSize)) ;
-    // }
+        return chargeService.pagenateCharges(PageRequest.of(page, pageSize)) ;
+    }
 
 
-    // @GetMapping("/{id}")
-    // ContractResponseDto find(
-    //     @PathVariable long id 
-    // ) {
-    //     return contractService.findContract(id) ;
-    // }
+    @GetMapping("/{id}")
+    ChargeResponseDto find(
+        @PathVariable long id 
+    ) {
+        return chargeService.findCharge(id) ;
+    }
 }

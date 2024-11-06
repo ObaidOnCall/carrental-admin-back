@@ -3,8 +3,7 @@ package ma.crm.carental.entities;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -98,16 +97,16 @@ public class Contract extends AbstractBaseEntity{
     @OneToMany(mappedBy = "contract")
     private List<Charge> charges ;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Vehicule vehicule;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id" , nullable = false)
     private Client client ;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deliveryGuy_id" , nullable = false)
     private DeliveryGuy deliveryGuy ;
 
