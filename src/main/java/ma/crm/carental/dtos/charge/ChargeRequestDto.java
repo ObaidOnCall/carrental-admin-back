@@ -1,11 +1,9 @@
 package ma.crm.carental.dtos.charge;
 
-import java.util.Date;
-import java.util.List;
+
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import ma.crm.carental.dtos.interfaces.ContractIdentifiable;
@@ -17,7 +15,7 @@ import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 public class ChargeRequestDto implements ContractIdentifiable{
     
     @NotNull(message = "Amount is required", groups = CreateValidationGroup.class)
-    @Positive(message = "Amount must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
+    @PositiveOrZero(message = "Amount must be positive", groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
     private double amount;
 
     @NotBlank(message = "Change type is required", groups = CreateValidationGroup.class)

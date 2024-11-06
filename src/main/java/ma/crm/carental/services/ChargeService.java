@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
+import ma.crm.carental.annotations.ValidateContracts;
 import ma.crm.carental.dtos.charge.ChargeRequestDto;
 import ma.crm.carental.dtos.charge.ChargeResponseDto;
 import ma.crm.carental.entities.Charge;
@@ -36,6 +37,7 @@ public class ChargeService {
     }
 
     
+    @ValidateContracts
     public List<ChargeResponseDto> saveCharges(List<ChargeRequestDto> chargeRequestDtos){
 
         return chargeMapper.fromCharge(
@@ -56,7 +58,7 @@ public class ChargeService {
         
     }
     
-    
+    @ValidateContracts
     public Map<String , Object> updateCharges(List<Long> chargesIds , List<ChargeRequestDto> chargeRequestDtos) {
 
         Map<String , Object> serviceMessage = new HashMap<>() ;
