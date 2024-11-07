@@ -38,8 +38,8 @@ public class Reservation extends AbstractBaseEntity{
     @SequenceGenerator(name = "reservation_seq" , sequenceName = "reservation_id_seq"  , allocationSize = 1 , initialValue = 200)
     private Long id ;
 
-    @Column(name = "payment_status")
-    private boolean paymentStatus;
+    @Column(name = "isPaid")
+    private boolean isPaid;
 
     
 
