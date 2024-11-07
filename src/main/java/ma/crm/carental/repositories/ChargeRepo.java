@@ -114,7 +114,7 @@ public class ChargeRepo implements ChargeInterface{
     @Override
     public Long count() {
 
-        String jpql = "SELECT COUNT(c) FROM Contract c";
+        String jpql = "SELECT COUNT(c) FROM Charge c";
 
         TypedQuery<Long> query = em.createQuery(jpql, Long.class);
         
