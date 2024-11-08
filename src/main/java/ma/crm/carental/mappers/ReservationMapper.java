@@ -7,14 +7,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 
-import ma.crm.carental.dtos.contract.ContractResponseDto;
 import ma.crm.carental.dtos.reservation.ReservationRequestDto;
 import ma.crm.carental.dtos.reservation.ReservationResponseDto;
 import ma.crm.carental.dtos.vehicule.VehResponseDto;
 import ma.crm.carental.entities.Reservation;
 import ma.crm.carental.entities.Vehicule;
-import ma.crm.carental.entities.Contract;
-import ma.crm.carental.utils.AuthUtiles;
 
 
 @Component
