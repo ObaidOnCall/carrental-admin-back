@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
@@ -19,75 +18,70 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import ma.crm.carental.dtos.contract.ContractRequestDto;
-import ma.crm.carental.dtos.contract.ContractResponseDto;
-import ma.crm.carental.dtos.deliveryguy.DeliveryGuyRequestDto;
-import ma.crm.carental.dtos.deliveryguy.DeliveryGuyResponseDto;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
-import ma.crm.carental.services.ContractService;
+import ma.crm.carental.dtos.reservation.ReservationRequestDto;
+import ma.crm.carental.dtos.reservation.ReservationResponseDto;
+import ma.crm.carental.services.ReservationService;
 
 @RestController
-@RequestMapping("/contracts")
+@RequestMapping("/reservations")
 @Validated
-public class ContractController {
+public class ReservationController {
+    
+    private final ReservationService reservationService ;
 
-    private final ContractService contractService ;
 
-
-    @Autowired
-    ContractController(
-        ContractService contractService
-    ) {
-        this.contractService = contractService ;
+    ReservationController(
+        ReservationService reservationService
+    ){
+        this.reservationService = reservationService ;
     }
+
 
     @PostMapping
     @Validated(CreateValidationGroup.class)
-    List<ContractResponseDto> save(
-        @RequestBody @Valid List<ContractRequestDto> contractRequestDtos
+    List<ReservationResponseDto> save(
+        @RequestBody @Valid List<ReservationRequestDto> reservationRequestDtos
     ) {
 
-        /**
-         * @see validate and generate the ValidationException with errors .
-         */
-        return contractService.saveContracts(contractRequestDtos) ;
+        return reservationService.saveReservations(reservationRequestDtos) ;
     }
-    
+
+
     @DeleteMapping("/{ids}")
     Map<String , Object> delete(
         @PathVariable List<Long> ids
     ){
-        return contractService.deleteContracts(ids) ;
+        return reservationService.deleteReservations(ids) ;
     }
 
-    
+
     @PutMapping("/{ids}")
     @Validated(UpdateValidationGroup.class)
     Map<String , Object> update(
         @PathVariable List<Long> ids ,
-        @RequestBody @Valid ContractRequestDto contractRequestDto 
+        @RequestBody @Valid ReservationRequestDto reservationRequestDto 
     ){
 
-        List<ContractRequestDto> contractRequestDtos = new ArrayList<>();
-        contractRequestDtos.add(contractRequestDto);
-        return contractService.updateContracts(ids, contractRequestDtos) ;
+        List<ReservationRequestDto> reservationRequestDtos = new ArrayList<>();
+        reservationRequestDtos.add(reservationRequestDto);
+        return reservationService.updateReservations(ids, reservationRequestDtos) ;
     }
 
     @GetMapping
-    Page<ContractResponseDto> pagenate(
+    Page<ReservationResponseDto> pagenate(
         @RequestParam int page ,
         @RequestParam int pageSize
     ) {
 
-        return contractService.pagenateContracts(PageRequest.of(page, pageSize)) ;
+        return reservationService.pagenateReservations(PageRequest.of(page, pageSize)) ;
     }
 
-
     @GetMapping("/{id}")
-    ContractResponseDto find(
+    ReservationResponseDto find(
         @PathVariable long id 
     ) {
-        return contractService.findContract(id) ;
+        return reservationService.findReservation(id) ;
     }
 }
