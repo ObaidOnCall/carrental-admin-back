@@ -6,11 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import ma.crm.carental.dtos.interfaces.VehiclueIdentifiable;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 
 @Data
-public class ReservationRequestDto {
+public class ReservationRequestDto implements VehiclueIdentifiable{
     
 
     @NotNull(message = "Start date is required", groups = CreateValidationGroup.class)

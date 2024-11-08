@@ -54,7 +54,7 @@ public class ReservationRepo implements ReservationInterface{
             return 0; // No records to delete
         }
 
-        String jpql = "DELETE FROM Charge c WHERE c.id IN :ids" ;
+        String jpql = "DELETE FROM Reservation r WHERE r.id IN :ids" ;
 
         return em.createQuery(jpql)
                     .setParameter("ids", reservationsIds)

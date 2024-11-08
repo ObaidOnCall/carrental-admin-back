@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import ma.crm.carental.annotations.ValidateContracts;
+import ma.crm.carental.annotations.ValidateVehicules;
 import ma.crm.carental.dtos.charge.ChargeRequestDto;
 import ma.crm.carental.dtos.charge.ChargeResponseDto;
 import ma.crm.carental.dtos.reservation.ReservationRequestDto;
@@ -40,7 +41,7 @@ public class ReservationService {
         this.reservationMapper = reservationMapper ;
     }
 
-    @ValidateContracts
+    @ValidateVehicules
     public List<ReservationResponseDto> saveReservations(List<ReservationRequestDto> reservationRequestDtos){
 
         return reservationMapper.fromReservation(
@@ -61,6 +62,7 @@ public class ReservationService {
         
     }
 
+    @ValidateVehicules
     public Map<String , Object> updateReservations(List<Long> reservationsIds , List<ReservationRequestDto> reservationRequestDtos) {
 
         Map<String , Object> serviceMessage = new HashMap<>() ;
