@@ -24,16 +24,20 @@ public class GlobalExceptionHandler {
     
 
     @ExceptionHandler(UnableToProccessIteamException.class)
-    public ResponseEntity<Map<String, Map<String , Object>>> handleUnableToProccessIteamException(UnableToProccessIteamException ex) {
+    public ResponseEntity<Map<String, Object>> handleUnableToProccessIteamException(UnableToProccessIteamException ex) {
         log.error("UnableToProccessIteamException: {}", ex.getMessage());
+
+        Map<String, Object> errorDetail = new HashMap<>();
+        errorDetail.put("message", ex.getMessage());
+
+        List<Map<String, Object>> errors = new ArrayList<>();
+        errors.add(errorDetail);
+
         Map<String, Object> response = new HashMap<>();
+        response.put("errors", errors);
         response.put("status", false);
-        response.put("message", ex.getMessage());
 
-        Map<String, Map<String , Object>> error = new HashMap<>();
-        error.put("error", response) ;
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
 
