@@ -59,6 +59,7 @@ public class SecurityConf {
         // -- Swagger UI v3 (OpenAPI)
         "/v3/api-docs/**",
         "/swagger-ui/**" ,
+        "/agency/**" ,
         /**
          * ! temporoy
          */
