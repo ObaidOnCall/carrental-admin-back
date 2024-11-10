@@ -61,6 +61,7 @@ public class SecurityConf {
         "/swagger-ui/**" ,
         "/agency/**" ,
         "/subscriptions/types",
+        "/tests/**",
         /**
          * ! temporoy
          */
