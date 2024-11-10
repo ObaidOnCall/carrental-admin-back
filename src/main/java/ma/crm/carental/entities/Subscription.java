@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Table(
         name = "subscriptions" ,
         indexes = {
-            @Index(columnList = "name" , name = "subscription_name_idx")
+            @Index(columnList = "tenantId" , name = "subscription_tenantId_idx")
         },
         uniqueConstraints = {
             @UniqueConstraint(columnNames = {"tenantId" , "subscriptionType"})
