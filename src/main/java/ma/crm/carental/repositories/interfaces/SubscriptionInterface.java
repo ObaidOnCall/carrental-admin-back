@@ -3,6 +3,7 @@ package ma.crm.carental.repositories.interfaces;
 import java.util.List;
 
 import ma.crm.carental.entities.Subscription;
+import ma.crm.carental.entities.SubscriptionType;
 
 
 public interface SubscriptionInterface {
@@ -15,7 +16,9 @@ public interface SubscriptionInterface {
 
     List<Subscription> subscriptionsWithPagination(int page, int pageSize) ;
 
-    Subscription find(long id) ;
+    List<SubscriptionType> subscriptionsTypes() ;
+
+    Subscription find(String id) ;
 
     Long count() ;
 }

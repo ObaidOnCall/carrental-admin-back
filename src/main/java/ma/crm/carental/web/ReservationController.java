@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +32,7 @@ public class ReservationController {
     
     private final ReservationService reservationService ;
 
-
+    @Autowired
     ReservationController(
         ReservationService reservationService
     ){

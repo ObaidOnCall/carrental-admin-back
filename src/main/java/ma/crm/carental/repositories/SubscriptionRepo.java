@@ -3,13 +3,17 @@ package ma.crm.carental.repositories;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import ma.crm.carental.entities.Reservation;
 import ma.crm.carental.entities.Subscription;
+import ma.crm.carental.entities.SubscriptionType;
 import ma.crm.carental.repositories.interfaces.SubscriptionInterface;
 
+
+@Repository
 public class SubscriptionRepo implements SubscriptionInterface{
 
 
@@ -57,7 +61,7 @@ public class SubscriptionRepo implements SubscriptionInterface{
     }
 
     @Override
-    public Subscription find(long id) {
+    public Subscription find(String id) {
 
         String hql = "FROM Subscription r WHERE r.id = :id";
             
@@ -69,6 +73,12 @@ public class SubscriptionRepo implements SubscriptionInterface{
     @Override
     public Long count() {
         throw new UnsupportedOperationException("Unimplemented method 'count'");
+    }
+
+    @Override
+    public List<SubscriptionType> subscriptionsTypes() {
+        String query = "SELECT st FROM SubscriptionType st";
+        return em.createQuery(query, SubscriptionType.class).getResultList();
     }
     
 }
