@@ -30,6 +30,9 @@ import lombok.NoArgsConstructor;
         name = "clients" ,
         indexes = {
             @Index(columnList = "tenantId" , name = "client_tenantId_idx")
+        },
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"tenantId" , "firstname" , "lastname"})
         }
 )
 @Data  @EqualsAndHashCode(callSuper = false)
@@ -85,6 +88,9 @@ public class Client extends AbstractBaseEntity{
 
     @OneToMany(mappedBy = "client")
     private List<Contract> contracts ;
+
+    @OneToMany(mappedBy = "client")
+    private List<ClientDocs> clientDocs ;
 
     
     

@@ -6,6 +6,10 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +27,7 @@ public class SwaggerConfig {
         @Value("${swagger.server-urls}")
         private List<String> serverUrls;
 
+        @SuppressWarnings("unchecked")
         @Bean
         public OpenAPI customOpenAPI() {
         
@@ -50,6 +55,16 @@ public class SwaggerConfig {
                                                 .scheme("bearer")
                                                 .bearerFormat("JWT")
                                 )
+                                .addRequestBodies("FileUploadRequest",
+                                new RequestBody()
+                                .content(new Content()
+                                        .addMediaType("multipart/form-data",
+                                        new MediaType()
+                                                .schema(new Schema<>()
+                                                .type("array")
+                                                .items(new Schema<>()
+                                                        .type("string")
+                                                        .format("binary"))))))
                 )
                 .servers(servers);
         }
