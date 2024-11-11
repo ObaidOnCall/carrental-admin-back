@@ -1,5 +1,9 @@
 package ma.crm.carental.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,14 +23,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import io.minio.SnowballObject;
+import io.minio.UploadSnowballObjectsArgs;
+import io.minio.errors.MinioException;
 import jakarta.validation.Valid;
 import ma.crm.carental.annotations.ReactiveValidation;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
+import ma.crm.carental.services.ClientObjectsService;
 import ma.crm.carental.services.ClientService;
 
 
@@ -35,12 +46,15 @@ import ma.crm.carental.services.ClientService;
 public class ClientController {
     
     private final ClientService clientService ;
+    private final ClientObjectsService clientObjectsService ;
 
     @Autowired
     public ClientController(
-            ClientService clientService
+            ClientService clientService ,
+            ClientObjectsService clientObjectsService
         ) {
             this.clientService = clientService ;
+            this.clientObjectsService = clientObjectsService ;
         }
 
     
@@ -99,6 +113,17 @@ public class ClientController {
         @PathVariable long id 
     ) {
         return clientService.findClient(id) ;
+    }
+
+
+    @PostMapping(value = "/{id}/upload" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadFiles(
+        @PathVariable long id ,
+        @RequestPart("files") List<MultipartFile> files
+    ) throws MinioException, IOException, InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException {
+        
+        clientObjectsService.upload(id, files);
+
     }
 
 }
