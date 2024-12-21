@@ -92,13 +92,11 @@ public class VehiculeSerivce {
         }
 
         return response ;
-
     }
 
     @ValidateVehiculeModels
     public Map<String , Object> updateVehs(List<VehRequsetDto> vehRequsetDtos , List<Long> ids) {
 
-        
         int count = vehiculeRepo.updateVehiculesInBatch(
                                                         ids,
                                                         TenantContext.getTenantId() ,

@@ -41,7 +41,7 @@ public class ContractService {
         this.contractMapper = contractMapper ;
     }
     
-    @ValidateClients 
+    @ValidateClients
     @ValidateVehicules
     @ValidateDeliveryGuys
     public List<ContractResponseDto> saveContracts(List<ContractRequestDto> contractRequestDtos){

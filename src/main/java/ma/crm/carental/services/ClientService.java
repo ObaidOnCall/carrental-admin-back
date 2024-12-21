@@ -72,7 +72,6 @@ public class ClientService {
         
     }
 
-
     public Map<String , Object> updateClients(List<Long> clientsIds , List<ClientRequestDto> clients) {
 
         Map<String , Object> serviceMessage = new HashMap<>() ;

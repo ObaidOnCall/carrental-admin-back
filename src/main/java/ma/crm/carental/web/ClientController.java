@@ -50,12 +50,12 @@ public class ClientController {
 
     @Autowired
     public ClientController(
-            ClientService clientService ,
-            ClientObjectsService clientObjectsService
-        ) {
-            this.clientService = clientService ;
-            this.clientObjectsService = clientObjectsService ;
-        }
+        ClientService clientService ,
+        ClientObjectsService clientObjectsService
+    ){
+        this.clientService = clientService ;
+        this.clientObjectsService = clientObjectsService ;
+    }
 
     
     /**

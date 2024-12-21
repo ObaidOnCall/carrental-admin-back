@@ -38,14 +38,14 @@ public class ClientChecker {
 
 		for (Object arg : args) {
 			
-			if (arg instanceof List<?>) {
+			if (arg instanceof List) {
 
 				List<?> list = (List<?>) arg;
 
 				if (!list.isEmpty() && list.get(0) instanceof ClientIdentifiable) {
 					
 					@SuppressWarnings("unchecked")
-                List<ClientIdentifiable> identifiableList = (List<ClientIdentifiable>) list;
+                	List<ClientIdentifiable> identifiableList = (List<ClientIdentifiable>) list;
 
 					List<Long> clients = identifiableList.stream()
 							.map(ClientIdentifiable::getClient)
