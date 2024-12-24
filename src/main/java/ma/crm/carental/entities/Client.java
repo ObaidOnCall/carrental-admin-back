@@ -2,6 +2,7 @@ package ma.crm.carental.entities;
 
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(
@@ -88,9 +90,6 @@ public class Client extends AbstractBaseEntity{
 
     @OneToMany(mappedBy = "client")
     private List<Contract> contracts ;
-
-    @OneToMany(mappedBy = "client")
-    private List<ClientDocs> clientDocs ;
 
     
     

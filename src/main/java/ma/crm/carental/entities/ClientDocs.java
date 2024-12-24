@@ -43,6 +43,12 @@ public class ClientDocs extends AbstractBaseEntity{
     @Column(nullable = false , unique = true)
     private String filename ;
 
+    @Column(nullable = false , unique = true)
+    private String bucket ;
+
+    @Column(nullable = false , unique = true)
+    private String region ;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Client client ;
