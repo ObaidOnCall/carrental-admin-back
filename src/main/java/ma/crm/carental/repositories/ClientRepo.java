@@ -13,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import ma.crm.carental.entities.Client;
+import ma.crm.carental.entities.ClientDocs;
 import ma.crm.carental.repositories.interfaces.ClientRepoInterface;
 import ma.crm.carental.tenantfilter.TenantContext;
 
@@ -152,5 +153,27 @@ public class ClientRepo implements ClientRepoInterface{
         TypedQuery<Long> query = em.createQuery(jpql, Long.class);
         
         return query.getSingleResult() ;
+    }
+
+    @Override
+    public List<ClientDocs> insertClientDocs(List<ClientDocs> clientDocs) {
+        
+        log.debug("batch size is : {} 🔖\n" , batchSize);
+
+        if (clientDocs == null || clientDocs.isEmpty()) {
+            return clientDocs ;
+        }
+
+        for (int i = 0; i < clientDocs.size(); i++) {
+            
+            em.persist(clientDocs.get(i));
+
+            if (i > 0 && i % batchSize == 0) {
+                em.flush();
+                em.clear();
+            }
+        }
+        
+        return clientDocs ;
     }
 }
