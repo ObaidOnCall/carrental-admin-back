@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
 import io.minio.SnowballObject;
 import io.minio.UploadSnowballObjectsArgs;
 import io.minio.errors.MinioException;
+import ma.crm.carental.annotations.ValidateClients;
 import ma.crm.carental.dtos.client.ClientResponseDto;
+import ma.crm.carental.dtos.docs.MetaData;
 
 
 
@@ -43,15 +46,16 @@ public class ClientObjectsService {
         this.clientService = clientService ;
     }
 
-    public void upload (
-        long id ,
+    @ValidateClients
+    public ObjectWriteResponse upload (
+        List<MetaData> docsMetaData ,
         List<MultipartFile> files
     ) throws MinioException, IOException, InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException{
 
         /**
          * by getting the client we verify that the org own this client
          */
-        ClientResponseDto client = clientService.findClient(id) ;
+        ClientResponseDto client = clientService.findClient(docsMetaData.get(0).getClient()) ;
 
 
         List<SnowballObject> snowballObjects = new ArrayList<>();
@@ -68,12 +72,12 @@ public class ClientObjectsService {
         }
 
         // Upload the files as a single TAR package
-        minioClient.uploadSnowballObjects(
-            UploadSnowballObjectsArgs.builder()
-                .bucket("clients")
-                .objects(snowballObjects)
-                .build()
-        );
+        return minioClient.uploadSnowballObjects(
+                    UploadSnowballObjectsArgs.builder()
+                        .bucket("clients")
+                        .objects(snowballObjects)
+                        .build()
+            );
     }
     
 

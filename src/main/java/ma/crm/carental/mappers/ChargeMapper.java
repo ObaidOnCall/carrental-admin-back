@@ -35,7 +35,7 @@ public class ChargeMapper {
                                             .descrption(chargeRequestDto.getDescription())
                                             .createdBy(createdBy)
                                             .build() 
-                ).collect(Collectors.toList()) ;
+                ).toList() ;
 
     }
     

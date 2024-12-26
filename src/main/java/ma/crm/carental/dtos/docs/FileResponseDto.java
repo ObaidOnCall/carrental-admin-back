@@ -1,21 +1,28 @@
 package ma.crm.carental.dtos.docs;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.crm.carental.dtos.interfaces.ClientIdentifiable;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MetaData implements ClientIdentifiable{
+public class FileResponseDto {
+    
+    private long id ;
+
+    private String filename ;
+
+    private double size ;
+
+    private String contentType ;
 
     private String bucket ;
-    
-    private String region ;
 
-    private Long client;
-    
+
+    private Date createAt ;
 }

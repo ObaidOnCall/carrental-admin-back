@@ -4,10 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import io.minio.ObjectWriteResponse;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
+import ma.crm.carental.dtos.docs.FileResponseDto;
+import ma.crm.carental.dtos.docs.MetaData;
 import ma.crm.carental.entities.Client;
+import ma.crm.carental.entities.ClientDocs;
 
 
 
@@ -58,6 +63,42 @@ public class ClientMapper {
                                     .phone1(client.getPhone1())
                                     .phone2(client.getPhone2())
                                     .build()
-        ).collect(Collectors.toList()) ;
+        ).toList() ;
+    }
+
+
+
+    public List<FileResponseDto> fromClientDocs(List<ClientDocs> clientDocs) {
+
+        return clientDocs.stream().map(
+            clientDoc -> FileResponseDto.builder()
+                            .id(clientDoc.getId())
+                            .filename(clientDoc.getFilename())
+                            .size(clientDoc.getSize())
+                            .contentType(clientDoc.getContentType())
+                            .bucket(clientDoc.getBucket())
+                            .createAt(clientDoc.getCreatedAt())
+                        .build()
+        ).toList() ;
+    }
+
+
+    public List<ClientDocs> toClientDocs(List<MultipartFile> files , MetaData metaData) {
+
+        return files.stream().map(
+            file -> ClientDocs.builder()
+                                .client(
+                                    Client.builder()
+                                    .id(metaData.getClient())
+                                    .build()
+                                )
+                                .filename(file.getOriginalFilename())
+                                .size(file.getSize())
+                                .contentType(file.getContentType())
+                                .bucket(metaData.getBucket())
+                                .region(metaData.getRegion())
+                                .build()
+
+        ).toList() ;
     }
 }
