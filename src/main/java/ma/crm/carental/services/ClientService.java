@@ -1,23 +1,38 @@
 package ma.crm.carental.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.checkerframework.checker.units.qual.min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 
+import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
+import io.minio.SnowballObject;
+import io.minio.UploadSnowballObjectsArgs;
+import io.minio.errors.MinioException;
 import jakarta.persistence.NoResultException;
+import ma.crm.carental.annotations.ValidateClients;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
+import ma.crm.carental.dtos.docs.FileResponseDto;
+import ma.crm.carental.dtos.docs.MetaData;
 import ma.crm.carental.dtos.violation.ViolationResponseDto;
 import ma.crm.carental.entities.Client;
+import ma.crm.carental.entities.ClientDocs;
 import ma.crm.carental.exception.UnableToProccessIteamException;
 import ma.crm.carental.mappers.ClientMapper;
 import ma.crm.carental.repositories.ClientRepo;
@@ -38,16 +53,20 @@ public class ClientService {
     private final ClientRepo clientRepo ;
     private final ClientMapper clientMapper ;
     private final Validator validator ;
+    private final MinioClient minioClient ;
 
     @Autowired
     ClientService(
             ClientRepo clientRepo ,
             ClientMapper clientMapper ,
-            Validator validator 
+            Validator validator ,
+            MinioClient minioClient
+
         ) {
         this.clientRepo = clientRepo ;
         this.clientMapper = clientMapper ;
         this.validator = validator ;
+        this.minioClient = minioClient ;
     }
 
 
@@ -119,4 +138,50 @@ public class ClientService {
         }
     }
 
+
+
+
+    /**
+     * Files mangements methods 
+     */
+
+    @ValidateClients
+    public List<FileResponseDto>  upload (
+        List<MetaData> docsMetaData ,
+        List<MultipartFile> files
+    ) throws MinioException, IOException, InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException{
+
+
+        ClientResponseDto client = this.findClient(docsMetaData.get(0).getClient()) ;
+
+
+        List<SnowballObject> snowballObjects = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            SnowballObject snowballObject = new SnowballObject(
+                client.getFirstname()+ "__" +file.getOriginalFilename(),
+                new ByteArrayInputStream(file.getBytes()),
+                file.getSize(),
+                null // Optionally, you can provide compression methods here
+            );
+            snowballObjects.add(snowballObject);
+        }
+
+        ObjectWriteResponse minioResponse = minioClient.uploadSnowballObjects(
+                                                UploadSnowballObjectsArgs.builder()
+                                                                        .bucket("clients")
+                                                                        .objects(snowballObjects)
+                                                                        .build()
+                                        );
+        MetaData metaData = MetaData.builder()
+                            .client(docsMetaData.get(0).getClient())
+                            .bucket(minioResponse.bucket())
+                            .region(minioResponse.region())
+                            .build() ;
+        
+        List<ClientDocs> clientDocs =  clientMapper.toClientDocs(files, metaData) ;
+        clientDocs = clientRepo.insertClientDocs(clientDocs) ;
+
+        return clientMapper.fromClientDocs(clientDocs) ;
+    }
 }
