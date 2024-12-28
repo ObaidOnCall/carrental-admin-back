@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.Result;
 import io.minio.SnowballObject;
 import io.minio.UploadObjectArgs;
 import io.minio.UploadSnowballObjectsArgs;
@@ -38,6 +40,7 @@ import io.minio.errors.MinioException;
 import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import io.minio.http.Method;
+import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -138,5 +141,24 @@ public class TestController {
         );
         
         log.info("All files uploaded successfully as a single TAR archive.");
+    }
+
+    @GetMapping("/listObjects")
+    public void listObjects() {
+
+        Iterable<Result<Item>> results = minioClient.listObjects(
+            ListObjectsArgs.builder().bucket("clients").build());
+
+        results.forEach(
+            result -> {
+                try {
+                    log.info(result.get().objectName());
+                } catch (InvalidKeyException | ErrorResponseException | IllegalArgumentException
+                        | InsufficientDataException | InternalException | InvalidResponseException
+                        | NoSuchAlgorithmException | ServerException | XmlParserException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        );
     }
 }

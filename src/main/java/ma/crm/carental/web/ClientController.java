@@ -33,13 +33,20 @@ import org.springframework.web.multipart.MultipartFile;
 import io.minio.ObjectWriteResponse;
 import io.minio.SnowballObject;
 import io.minio.UploadSnowballObjectsArgs;
+import io.minio.errors.ErrorResponseException;
+import io.minio.errors.InsufficientDataException;
+import io.minio.errors.InternalException;
+import io.minio.errors.InvalidResponseException;
 import io.minio.errors.MinioException;
+import io.minio.errors.ServerException;
+import io.minio.errors.XmlParserException;
 import jakarta.validation.Valid;
 import ma.crm.carental.annotations.ReactiveValidation;
 import ma.crm.carental.dtos.client.ClientRequestDto;
 import ma.crm.carental.dtos.client.ClientResponseDto;
 import ma.crm.carental.dtos.docs.FileResponseDto;
 import ma.crm.carental.dtos.docs.MetaData;
+import ma.crm.carental.dtos.docs.PresignedURL;
 import ma.crm.carental.dtos.interfaces.validationgroups.CreateValidationGroup;
 import ma.crm.carental.dtos.interfaces.validationgroups.UpdateValidationGroup;
 import ma.crm.carental.services.ClientService;
@@ -139,6 +146,14 @@ public class ClientController {
         @PathVariable long id
     ){
         return clientService.listFiles(id) ;
+    }
+
+
+    @GetMapping("/docs/{id}")
+    public PresignedURL presignedUrl (
+        @PathVariable long id
+    ) throws InvalidKeyException, ErrorResponseException, InsufficientDataException, InternalException, InvalidResponseException, NoSuchAlgorithmException, XmlParserException, ServerException, IllegalArgumentException, IOException{
+        return clientService.presignedUrl(id) ;
     }
 
 }
