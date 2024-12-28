@@ -91,6 +91,9 @@ public class Client extends AbstractBaseEntity{
     @OneToMany(mappedBy = "client")
     private List<Contract> contracts ;
 
+    @OneToMany(mappedBy = "client")
+    private List<ClientDocs> clientDocs ;
+
     
     
 }

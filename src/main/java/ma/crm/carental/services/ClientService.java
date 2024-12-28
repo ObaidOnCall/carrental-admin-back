@@ -184,4 +184,19 @@ public class ClientService {
 
         return clientMapper.fromClientDocs(clientDocs) ;
     }
+
+
+    public List<FileResponseDto> listFiles (long id) {
+
+        try {
+            Client client = clientRepo.find(id) ;
+
+            return clientMapper.fromClientDocs(
+                client.getClientDocs()
+            );
+
+        } catch (NoResultException e) {
+            throw new UnableToProccessIteamException(ClientService.ERRORMESSAGE) ;
+        }
+    }
 }

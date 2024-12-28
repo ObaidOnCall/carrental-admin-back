@@ -134,4 +134,11 @@ public class ClientController {
         return clientService.upload(listMetaDatas, files);
     }
 
+    @GetMapping("/{id}/docs")
+    public List<FileResponseDto> listFiles (
+        @PathVariable long id
+    ){
+        return clientService.listFiles(id) ;
+    }
+
 }
