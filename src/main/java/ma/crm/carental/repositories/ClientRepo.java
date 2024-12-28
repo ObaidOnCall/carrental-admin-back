@@ -176,4 +176,17 @@ public class ClientRepo implements ClientRepoInterface{
         
         return clientDocs ;
     }
+
+
+    @Override
+    public ClientDocs findClientDocs(long id) throws NoResultException{
+
+        String hql = "FROM ClientDocs c WHERE c.id = :id";
+        ClientDocs clientDocs ;
+            
+        clientDocs = (ClientDocs) em.createQuery(hql)
+                                .setParameter("id", id)
+                                .getSingleResult() ;
+        return clientDocs ;
+    }
 }

@@ -1,7 +1,6 @@
 package ma.crm.carental.repositories.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import ma.crm.carental.entities.Client;
 import ma.crm.carental.entities.ClientDocs;
@@ -21,5 +20,7 @@ public interface ClientRepoInterface {
     Long count() ;
 
     List<ClientDocs> insertClientDocs(List<ClientDocs> clientDocs) ;
+
+    ClientDocs findClientDocs(long id) ;
     
 }
