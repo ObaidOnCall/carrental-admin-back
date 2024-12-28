@@ -83,7 +83,11 @@ public class ClientMapper {
     }
 
 
-    public List<ClientDocs> toClientDocs(List<MultipartFile> files , MetaData metaData) {
+    public List<ClientDocs> toClientDocs(
+        List<MultipartFile> files , 
+        MetaData metaData ,
+        ClientResponseDto client
+    ) {
 
         return files.stream().map(
             file -> ClientDocs.builder()
@@ -92,7 +96,7 @@ public class ClientMapper {
                                     .id(metaData.getClient())
                                     .build()
                                 )
-                                .filename(file.getOriginalFilename())
+                                .filename(client.getFirstname()+ "__" +file.getOriginalFilename())
                                 .size(file.getSize())
                                 .contentType(file.getContentType())
                                 .bucket(metaData.getBucket())
