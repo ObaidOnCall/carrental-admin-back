@@ -1,6 +1,7 @@
 package ma.crm.carental.security;
 
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -15,24 +16,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import ma.crm.carental.conf.KeycloakJwtAuthenticationConverter;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 
 
 @Configuration
@@ -41,8 +34,8 @@ public class SecurityConf {
     
     private final CorsConfigurationSource corsConfigurationSource ;
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
-    private Resource publicKeyResource;
+    // @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
+    // private Resource publicKeyResource;
 
     @Value("${spring.security.oauth2.resourceserver.jwt.jws-algorithms}")
     private String jwsAlgorithm;
@@ -113,19 +106,28 @@ public class SecurityConf {
         try {
             // Read the public key from the specified location
             // String publicKeyPEM = new String(Files.readAllBytes(publicKeyResource.getFile().toPath()));
+            ClassPathResource publicKeyResource = new ClassPathResource("my-key.pub");
+
+
+
+            String publicKeyPEM;
+            try (InputStream inputStream = publicKeyResource.getInputStream()) {
+                publicKeyPEM = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            }
+
             /**
              * ! do not do it in producation env
              */
 
-                String publicKeyPEM = "-----BEGIN PUBLIC KEY-----\n" + //
-                        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt7UVwQPra71PcAFzmr1g9XP/iT2CCaOE40n95KGAqS2TMvuX7wJfHZ+K0IkI3lOjFVDu7vpW/JzsK2vGdKadY1mPdYWcjlaSwJWdVSnzVkqI5J0NDLTOg8P+RlbB80myVX+pFeRqtcEy8zUKraxTZhZdAv28VkzG0N3+gFqwNHb+fa1Cmp8tWk314M+UtyktS9ZxEGXdmJaNwncRCzv6Cr0bJJRtpAJtipp2yAcgeLfqAEcjkwSoE+msRkhVoflV4IWLH81e+pryeDeQGnNsAukBg6RPH4qpS66JKjFsQPiEffUYUDh+hWXxxNc6PPZMmVGMIEl2s9ocl4fw4fs+rQIDAQAB\n" + //
-                        "-----END PUBLIC KEY-----" ;
-             /**
-              * !
-              */
+                // String publicKeyPEM = "-----BEGIN PUBLIC KEY-----\n" + //
+                //         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt7UVwQPra71PcAFzmr1g9XP/iT2CCaOE40n95KGAqS2TMvuX7wJfHZ+K0IkI3lOjFVDu7vpW/JzsK2vGdKadY1mPdYWcjlaSwJWdVSnzVkqI5J0NDLTOg8P+RlbB80myVX+pFeRqtcEy8zUKraxTZhZdAv28VkzG0N3+gFqwNHb+fa1Cmp8tWk314M+UtyktS9ZxEGXdmJaNwncRCzv6Cr0bJJRtpAJtipp2yAcgeLfqAEcjkwSoE+msRkhVoflV4IWLH81e+pryeDeQGnNsAukBg6RPH4qpS66JKjFsQPiEffUYUDh+hWXxxNc6PPZMmVGMIEl2s9ocl4fw4fs+rQIDAQAB\n" + //
+                //         "-----END PUBLIC KEY-----" ;
+            /**
+             * !
+            */
             publicKeyPEM = publicKeyPEM.replace("-----BEGIN PUBLIC KEY-----", "")
-                                       .replace("-----END PUBLIC KEY-----", "")
-                                       .replaceAll("\\s+", "");
+                                    .replace("-----END PUBLIC KEY-----", "")
+                                    .replaceAll("\\s+", "");
             byte[] encoded = Base64.getDecoder().decode(publicKeyPEM);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
