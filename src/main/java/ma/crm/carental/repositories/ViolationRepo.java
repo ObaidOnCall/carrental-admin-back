@@ -85,7 +85,7 @@ public class ViolationRepo implements ViolationRepoInterface{
                     .setParameter("finAmount", violation.getFinAmount())
                     .setParameter("date", violation.getDate())
                     .setParameter("isPaid", violation.getIsPaid())
-                    .setParameter("clientId", violation.getClient() != null ? violation.getClient().getId() : null)
+                    .setParameter("clientId", violation.getClientId() != null ? violation.getClientId() : null)
                     .setParameter("chargeId", violation.getCharge() != null ? violation.getCharge().getId() : null)
                     .setParameter("violationsIds", batch)
                     .executeUpdate();

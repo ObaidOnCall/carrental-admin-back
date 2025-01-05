@@ -101,10 +101,12 @@ public class Contract extends AbstractBaseEntity{
     @JoinColumn(nullable = false)
     private Vehicule vehicule;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id" , nullable = false)
-    private Client client ;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "client_id" , nullable = false)
+    // private Client client ;
 
+    @JoinColumn(name = "client_id", nullable = false)
+    private Long clientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deliveryGuy_id" , nullable = false)

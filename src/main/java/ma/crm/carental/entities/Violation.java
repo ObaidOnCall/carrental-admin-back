@@ -52,9 +52,14 @@ public class Violation extends AbstractBaseEntity{
 
     private Boolean isPaid ;
 
-    @JoinColumn(nullable = false)
-    @ManyToOne
-    private Client client ;
+    // @JoinColumn(nullable = false)
+    // @ManyToOne
+    // private Client client ;
+
+
+    @JoinColumn(name = "client_id", nullable = false)
+    private Long clientId;
+
 
     @JoinColumn(name = "charge_id" , nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)

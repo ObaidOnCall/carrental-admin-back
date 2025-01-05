@@ -26,7 +26,7 @@ public class ViolationMapper {
                                             .description(violationRequestDto.getDescription())
                                             .finAmount(violationRequestDto.getFinAmount())
                                             .isPaid(violationRequestDto.isPaid())
-                                            .client(Client.builder().id(violationRequestDto.getClient()).build())
+                                            .clientId(violationRequestDto.getClient())
                                             .charge(
                                                 violationRequestDto.getCharge() != null && violationRequestDto.getCharge() != 0 
                                                 ? Charge.builder().id(violationRequestDto.getCharge()).build() 
@@ -34,7 +34,7 @@ public class ViolationMapper {
                                             )
                                             .date(violationRequestDto.getDate())
                                             .build()
-                ).collect(Collectors.toList()) ;
+                ).toList() ;
 
     }
 
@@ -53,23 +53,9 @@ public class ViolationMapper {
                             .description(violation.getDescription())
                             .finAmount(violation.getFinAmount())
                             .isPaid(violation.getIsPaid())
-                            .client(ClientResponseDto.builder()
-                                                        .id(violation.getClient().getId())
-                                                        .firstname(violation.getClient().getFirstname())
-                                                        .lastname(violation.getClient().getLastname())
-                                                        .email(violation.getClient().getEmail())
-                                                        .address(violation.getClient().getAddress())
-                                                        .ville(violation.getClient().getVille())
-                                                        .phone1(violation.getClient().getPhone1())
-                                                        .phone2(violation.getClient().getPhone2())
-                                                        .cinOrPassport(violation.getClient().getCinOrPassport())
-                                                        .cinIsValideUntil(violation.getClient().getCinIsValideUntil())
-                                                        .licence(violation.getClient().getLicence())
-                                                        .licenceIsValideUntil(violation.getClient().getLicenceIsValideUntil())
-                                                        .build()
-                            )
+                            .client(violation.getClientId())
                             .date(violation.getDate()) 
                             .build()
-        ).collect(Collectors.toList()) ;
+        ).toList();
     }
 }

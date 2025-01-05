@@ -85,11 +85,11 @@ public class Client extends AbstractBaseEntity{
     @OneToMany(mappedBy = "client")
     private List<Billing> billings ;
 
-    @OneToMany(mappedBy = "client")
-    private List<Violation> violations ;
+    // @OneToMany(mappedBy = "client")
+    // private List<Violation> violations ;
 
-    @OneToMany(mappedBy = "client")
-    private List<Contract> contracts ;
+    // @OneToMany(mappedBy = "client")
+    // private List<Contract> contracts ;
 
     @OneToMany(mappedBy = "client")
     private List<ClientDocs> clientDocs ;

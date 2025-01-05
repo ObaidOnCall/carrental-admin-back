@@ -55,8 +55,10 @@ public class ContractResponseDto {
 
     private VehResponseDto vehicule;
 
-    private ClientResponseDto client ;
+    // private ClientResponseDto client ;
 
+    private long client ;
+    
     private DeliveryGuyResponseDto deliveryGuy ;
 
     @CreationTimestamp

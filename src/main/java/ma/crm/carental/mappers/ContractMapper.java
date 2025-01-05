@@ -34,11 +34,7 @@ public class ContractMapper {
                                                 .id(contractRequestDto.getVehicule())
                                                 .build()
                                             )
-                                            .client(
-                                                Client.builder()
-                                                .id(contractRequestDto.getClient())
-                                                .build()
-                                            )
+                                            .clientId(contractRequestDto.getClient())
                                             .deliveryGuy(
                                                 DeliveryGuy.builder()
                                                 .id(contractRequestDto.getDeliveryGuy())
@@ -60,7 +56,7 @@ public class ContractMapper {
                                             .createdBy(createdBy)
                                             
                                             .build() 
-                ).collect(Collectors.toList()) ;
+                ).toList() ;
 
     }
     
@@ -84,23 +80,7 @@ public class ContractMapper {
                                         // )
                                         .build()
                                     )
-                                    .client(
-                                        ClientResponseDto.builder()
-                                        .id(contract.getClient().getId())
-                                        .firstname(contract.getClient().getFirstname())
-                                        .lastname(contract.getClient().getLastname())
-                                        .cinOrPassport(contract.getClient().getCinOrPassport())
-                                        .clientType(contract.getClient().getClientType())
-                                        .build()
-                                    )
-                                    .deliveryGuy(
-                                        DeliveryGuyResponseDto.builder()
-                                        .id(contract.getClient().getId())
-                                        .firstname(contract.getClient().getFirstname())
-                                        .lastname(contract.getClient().getLastname())
-                                        .cinOrPassport(contract.getClient().getCinOrPassport())
-                                        .build()
-                                    )
+                                    .client(contract.getClientId())
                                     .numContract(contract.getNumContract())
                                     .caution(contract.getCaution())
                                     .days(contract.getDays())
@@ -115,6 +95,6 @@ public class ContractMapper {
                                     .placeOfReturn(contract.getPlaceOfReturn())
                                     .dateValideDrivingLicence(contract.getDateValideDrivingLicence())
                                     .build()
-        ).collect(Collectors.toList()) ;
+        ).toList() ;
     }
 }
