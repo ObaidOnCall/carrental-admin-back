@@ -1,6 +1,8 @@
 package ma.crm.carental.dtos.deliveryguy;
 
 import java.util.Date;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -41,10 +43,20 @@ public class DeliveryGuyRequestDto{
 
     private int codePostal;
 
-    @Pattern(regexp = "^\\+\\d{1,15}$", message = "Phone number must start with + and should not exceed 15 digits" , groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
+    @Pattern(
+        regexp = "^\\+(?:\\d-?){1,20}\\d$",
+        message = "Phone number must start with + and contain up to 20 digits (hyphens are optional)",
+        groups = { CreateValidationGroup.class, UpdateValidationGroup.class }
+    )
+    @Schema(description = "The primary phone number of the client", example = "+1234567890")
     private String phone1;
 
-    @Pattern(regexp = "^\\+\\d{1,15}$", message = "Alternate phone number must start with + and should not exceed 15 digits" , groups = { CreateValidationGroup.class, UpdateValidationGroup.class })
+    @Pattern(
+        regexp = "^\\+(?:\\d-?){1,20}\\d$",
+        message = "Phone number must start with + and contain up to 20 digits (hyphens are optional)",
+        groups = { CreateValidationGroup.class, UpdateValidationGroup.class }
+    )
+    @Schema(description = "The secondary phone number of the client", example = "+0987654321")
     private String phone2;
 
     @Email(message = "Please provide a valid email address")
